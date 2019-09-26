@@ -1,0 +1,67 @@
+---
+title: "Class 1 Project"
+---
+## Load libraries
+```{r setup}
+library(tidyverse)
+library(here)
+```
+
+## Import data
+This is the code chunk that imports data. We will discuss how this code works in the next few sessions. All you need to know for now is that this imports an `R object` into your environment. Look to the right at the "Environment" tab and see a new object called `genome`. 
+```{r import}
+genome <- read_csv(here::here("class", "1_intro", "genome.csv"), col_names = TRUE)
+#cleaning step, required to relevel chromosomes in proper order
+chromosome_levels <- c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "X", "Y")
+genome$chromosome <- fct_relevel(genome$chromosome, chromosome_levels)
+```
+
+## Take a `glimpse` into the kinds of data in the dataframe
+The `genome` object is a table (also called a dataframe), that has a series of columns and rows. The function `glimpse()` perfroms a quick peek at the data. We can see that this table has 14 columns (called 'Variables'), and 24 rows (called 'Observations'). The name of each Variable is listed below (e.g. 'chromosome', 'length_mm', etc.). Importantly, R cares about capitalization, so `chromosome` is NOT the same as `Chromosome`. The type of variable is listed next (e.g. <fct>, <dbl>, etc.), but you don't need to worry about these yet. Lastly, the first few observations are listed.  
+  
+```{r glimpse}
+glimpse(genome)
+```
+
+Another way to View the `genome` table object is to run the view function. This is one of the odd functions in R that starts with a capital letter. Viewing the table will open a new tab in Rstudio to see all the data. This works great for small tables (24x14), but will crash R with big tables (100,000 x 100,000). To view this table, type in the console below: View(genome)  
+  
+Understanding where your data come from, and how your data are structured is one of the most important things in Data Science. This table was scraped from: https://en.wikipedia.org/wiki/Human_genome. Go to a web browser to look at the original source.  
+  
+## My first graph  
+Now we will make your first graph. Run the code chunk below to generate the image, and then continue reading about what each part of the code does.  
+`ggplot` is the function  
+`geom_point` is the type of graph - point graph in this case  
+`labs` is the layer for **lab**els  
+`theme_minimal` is an easy layer to change several of the visual features of the graph  
+`scale_y_continuous` allows me to change the scale to make it more readable  
+`NULL` doesn't add anything to the graph, but allows you to comment out (#) layers without breaking the graph; if you break the graph and R is not responding, it's likely that `R` is waiting for another command; just hit `esc` on your keyboard to start over.  
+
+```{r first_graph}
+ggplot(genome, aes(x = chromosome, y = basepairs)) +
+  geom_point(color = "darkblue", size = 3) +
+  labs(x = "Chromosome", y = "Basepairs (Millions)", title = "Number of Basepairs for Each Human Chromosome", caption = "Data from Wikipedia | Plot from @hirscheylab") +
+  theme_minimal() +
+  scale_y_continuous(labels = c(50, 100, 150, 200, 250)) +
+  NULL
+```
+
+## This project has two final parts:  
+1. One-by-one, comment out lines in the code chunk above. Figure out what each line of code does.
+  
+```{r quiz}
+#Q: Which line is responsible for plotting the data on the graph?  
+#A: 
+```
+
+2. Make your own graph in the code chunk below. Use the code from the `{r first_graph}` code chunk. Copying and pasting is OK! Look at the different variables that are available for plotting by inspecting the `{r glimpse}` code chunk. Feel free to experiment and plot different information.  
+* change the variable, if you'd like; the original plot compared Chromosome # vs. Basepairs, but 12 other variables are unused.  
+* change the color of the points (be resourceful to find color names useable in `R`)   
+* change the size of the points to something bigger
+* finalize the labels (title, axes, caption) based on what you changed, and to reflect that you made it!  
+* get creative; use cheatsheets or other resources to change other elements of this graph  
+ 
+```{r second_graph}
+#your code goes here
+
+```
+

@@ -1,0 +1,167 @@
+---
+title: "Tidybiology: Class 1"
+output: html_notebook
+---
+
+##Load libraries
+```{r load_block, warning=FALSE, echo=TRUE}
+library(tidyverse)
+library(janitor)
+library(viridis)
+library(ggridges)
+
+#clear environment
+rm(list=ls()) 
+
+#print Session information for provenance and reproducibility
+utils:::print.sessionInfo(sessionInfo()[-7]) 
+#You can remove an item from sessionInfo(), which is a list with a class attribute, by printing the resulting object omitting one of the list items (omitted list of packages installed, but not loaded)
+
+#Set theme
+theme_set(theme_light())
+```
+
+#import
+Go [here](https://www.uniprot.org/uniprot/?query=*&fil=reviewed%3ayes+AND+organism%3a%22Homo+sapiens+(Human)+%5b9606%5d%22&offset=525#) for raw data
+```{r}
+raw <- read_tsv("raw/uniprot-filtered-reviewed%3Ayes+AND+organism%3A%22Homo+sapiens+%28Human%29+%5B96--.tab", col_names = TRUE) %>% 
+  clean_names() %>% 
+  select(-status, -entry_name)
+```
+#clean
+```{r}
+subcell <- raw %>%
+  filter(str_detect(subcellular_location_cc, "SUBCELLULAR")) %>% 
+  mutate(subcellular_location_cc = str_remove_all(subcellular_location_cc, "SUBCELLULAR LOCATION\\: ")) %>%
+  separate(subcellular_location_cc, into = c("subcellular_location_cc"), sep = "Note") %>% 
+  separate(subcellular_location_cc, into = c("subcellular_location_cc"), sep = "\\;") %>% 
+  separate(subcellular_location_cc, into = c("subcellular_location_cc"), sep = "\\{") %>% 
+  separate(subcellular_location_cc, into = c("subcellular_location_cc"), sep = "\\,") %>% 
+  separate(subcellular_location_cc, into = c("subcellular_location_cc"), sep = "\\.") %>% 
+  separate(subcellular_location_cc, into = c("temp", "subcellular_location_cc"), sep = "\\:", fill = "left") %>% 
+  select(-temp)
+
+#because of cleaning, some locations were listed as gene names; easy way to omit is if they are a single instance
+omit <- subcell %>% 
+  count(subcellular_location_cc, sort = TRUE) %>% 
+  filter(n == 1) %>% 
+  pull(subcellular_location_cc)
+
+'%ni%' <- Negate('%in%') #negate 'in' operator
+
+subcell <- subcell %>% 
+  filter(subcellular_location_cc %ni% omit) %>% #single instances
+  filter(str_length(subcellular_location_cc) > 0) #length is 0 for a few instance; omit
+
+subcell$subcellular_location_cc <- str_trim(subcell$subcellular_location_cc, side = "both") #make it so that white space does not make separate categories
+```
+
+
+#eda
+```{r}
+#What are some of the characteristics of the human protein lengths?
+subcell %>% 
+  summarize(avg = mean(length), 
+            sd = sd(length), 
+            median = median(length), 
+            min = min(length),
+            max = max(length))
+
+#Which subcellular locations have most annotated proteins?
+subcell %>% 
+  count(subcellular_location_cc, sort = TRUE)
+
+#What is longest protein in each subcellular compartment?
+subcell %>% 
+  group_by(subcellular_location_cc) %>% 
+  summarize(longest = max(length))
+
+```
+#viz
+```{r}
+#first visualization
+subcell %>% 
+  ggplot(aes(x = length)) +
+  geom_histogram(bins = 100)
+
+#filter outlier
+subcell %>% 
+  filter(length < 10000) %>% 
+  ggplot(aes(x = length)) +
+  geom_histogram(bins = 100)
+
+#focus on one place
+subcell %>% 
+  filter(length < 10000) %>% 
+  filter(subcellular_location_cc %in% "Mitochondrion") %>% 
+  ggplot(aes(x = length)) +
+  geom_histogram(bins = 100)
+
+#more than one mito location
+subcell %>% 
+  filter(length < 10000) %>% 
+  filter(subcellular_location_cc %in% c("Mitochondrion", "Mitochondrion inner membrane")) %>% 
+  ggplot(aes(x = length)) +
+  geom_histogram(bins = 100)
+
+#color by place
+subcell %>% 
+  filter(length < 10000) %>% 
+  filter(subcellular_location_cc %in% c("Mitochondrion", "Mitochondrion inner membrane")) %>% 
+  ggplot(aes(x = length, fill = subcellular_location_cc)) +
+  geom_histogram(bins = 100)
+
+#get all mito proteins
+subcell %>% 
+  filter(length < 10000) %>% 
+  filter(str_detect(subcellular_location_cc, "Mito")) %>% 
+  ggplot(aes(x = length, fill = subcellular_location_cc)) +
+  geom_histogram(bins = 100)
+```
+
+#viz all
+```{r}
+ggplot(data = subcell, aes(x = length, fill = subcellular_location_cc)) +
+  geom_histogram(bins = 100) 
+
+ggplot(data = subcell, aes(x = length, fill = subcellular_location_cc)) +
+  geom_histogram(bins = 100, show.legend = FALSE) 
+
+ggplot(data = subcell, aes(x = length, fill = fct_lump(subcellular_location_cc, 10))) +
+  geom_histogram(bins = 100, show.legend = TRUE)
+
+ggplot(data = subcell, aes(x = log(length), fill = fct_lump(subcellular_location_cc, 10))) +
+  geom_histogram(bins = 100, show.legend = TRUE)
+
+ggplot(data = subcell, aes(x = log(length), fill = fct_lump(subcellular_location_cc, 10))) +
+  geom_histogram(bins = 100, show.legend = TRUE) +
+  labs(x = "AA length(log10)", y = "Count")
+
+ggplot(data = subcell, aes(x = log(length), fill = fct_lump(subcellular_location_cc, 10))) +
+  geom_histogram(bins = 100, show.legend = TRUE) +
+  labs(x = "AA length(log10)", y = "Count") +
+  scale_fill_viridis(discrete = TRUE)
+
+ggplot(data = subcell, aes(x = log(length), fill = fct_lump(subcellular_location_cc, 10))) +
+  geom_density(show.legend = TRUE) +
+  labs(x = "AA length(log10)", y = "Count") +
+  scale_fill_viridis(discrete = TRUE)
+
+ggplot(data = subcell, aes(x = log(length), ..scaled.., fill = fct_lump(subcellular_location_cc, 10))) +
+  geom_density(show.legend = TRUE) +
+  labs(x = "AA length(log10)", y = "Count") +
+  scale_fill_viridis(discrete = TRUE)
+
+ggplot(data = subcell, aes(x = log(length), ..scaled.., fill = fct_lump(subcellular_location_cc, 10))) +
+  geom_density(show.legend = TRUE, alpha = 0.7) +
+  labs(x = "AA length(log10)", y = "Count") +
+  scale_fill_viridis(discrete = TRUE)
+
+ggplot(data = subcell, aes(x = log(length), y = fct_lump(subcellular_location_cc, 10),  fill = fct_lump(subcellular_location_cc, 10))) +
+  geom_density_ridges(show.legend = FALSE, alpha = 0.7) +
+  labs(x = "AA length(log10)", y = "", title = "Distribution of Protein length in subcellular compartments") +
+  scale_fill_viridis(discrete = TRUE)
+
+#I'd probably refactor/regroup the compartments to make them larger classes (think mito), and I'd also probably rank the visualization by the mean for each (high to low...it's current ranked by number of proteins in the compartment)
+```
+

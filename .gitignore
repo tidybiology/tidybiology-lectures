@@ -1,0 +1,13 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+/.DS_Store
+*.nb.html
+*.Rproj
+ideas/
+datasets/
+tmp/
+00*
+7*
+6*

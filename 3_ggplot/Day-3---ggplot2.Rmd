@@ -1,0 +1,130 @@
+---
+title: "Day 3 lesson plan"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(EBImage)
+uniprot_data <- read.csv("~/Desktop/R Stuff/Bio 710/flipbooks/full_df.csv")
+```
+
+## Introduction to ggplot2
+
+ggplot2 is a library in R that you can use to make beautiful graphs in an efficient and intuitive way. 
+
+The "gg" stands for "grammar of graphics" and represents a certain philosophy about how to apporach plotting a graph. It involves adding layers, where each line of code adds new elements to the graph. In this way you can rapidly go from a simple plot to a sophisticated one in just a few lines of code
+
+## Elements of a ggplot
+
+
+```{r ggplot2 image, warning = FALSE, echo = FALSE, fig.cap="Artwork by @allison_horst"}
+img1 <- readImage("~/Desktop/R Stuff/Bio 710/Lesson plans/ggplot2_masterpiece.png")
+display(img1)
+```
+
+
+There are three elements in ggplot - **aesthetics**, **geoms**, and **optionals**. The aesthetic is *what* you want to graph, the geom is *how* you want to graph it, and the optionals are *additional elements* you can add to the graph, like titles, fonts, background colours, and so on
+
+ggplot2 is like dplyr in that we string together lines of code in a logical and easy-to-read way. Instead of the `%>%` operators, we use a `+` sign
+
+The first line of a ggplot nearly always looks like this 
+
+```{r first line, eval = FALSE}
+ggplot(uniprot_data, aes(...))
+```
+
+The `gpplot()` function takes the dataframe you want to visualize as its first input (which in this case is `uniprot_data`), followed by the `aes()` function (this is the "aesthetic" we mentioned earlier). `aes()` is where you enter the variables (columns) you want to plot. For example, if you wanted to plot protein length against gene length, this would be your first line
+
+```{r scatterplot first line, eval = FALSE}
+ggplot(uniprot_data, aes(x = Gene.Length, y = Protein.Length))
+```
+
+Here, you have stated you want to plot protein length (on the y-axis) against gene length (on the x-axis). However, running this code produces a blank screen. This is because you haven't stated how you want to plot your data. This is where you intoduce a geom. For scatterplots, you use `geom_point()`, and you "add" it to your first line using a `+` sign
+
+```{r simple scatter plot}
+ggplot(uniprot_data, aes(x = Gene.Length, y = Protein.Length)) +
+  geom_point()
+```
+
+The third element - the optionals - allow you to do things like add labels. For example, to add x-axis and y-axis titles, run the following
+
+```{r scatterplot optionals}
+ggplot(uniprot_data, aes(x = Gene.Length, y = Protein.Length)) +
+  geom_point() +
+  xlab("Gene Length") +
+  ylab("Protein Length") 
+```
+
+The `xlab()`and `ylab()` functions are used to change the x-axis and y-axis titles respectively
+
+## Shapes and colours
+
+Additional aesthetic elements, like shapes and colours, can easily be added to your plot. In addition to making your plot pretty, they can also be used to convey additional pieces of information. For example, in the previous graph, we plotted protein length against gene length. But this was for ALL proteins. What if we want to get a sense of this relationship for specific regions of the cell? One way to do this would be to assign different colours to datapoints that correspond to different regions. For example
+
+```{r scatterlot colour}
+ggplot(uniprot_data, aes(x = Gene.Length, y = Protein.Length, colour = region)) +
+  geom_point() +
+  xlab("Gene Length") +
+  ylab("Protein Length") 
+```
+
+By adding `colour = region` to the `aes()` function, we map data from this column to colours on the plot, where pink represents proteins located in the nucleus, blue represents proteins in the mitochondrion etc (this default colour palette can easily be changed). If you want ALL the points to be the same colour (red, for example), run the following code
+
+```{r scatterplot red}
+ggplot(uniprot_data, aes(x = Gene.Length, y = Protein.Length)) +
+  geom_point(colour = "Red") +
+  xlab("Gene Length") +
+  ylab("Protein Length") 
+```
+
+Here, you enter `colour = "Red"` within `geom_point()`. In this case you are "forcing" all points to be red, so you don't need to use the `aes()` function (because you aren't mapping any data onto your plot)
+
+If instead of different colours, you wanted to produce different shapes, run the following 
+
+```{r scatterplot shapes}
+ggplot(uniprot_data, aes(x = Gene.Length, y = Protein.Length, shape = region)) +
+  geom_point() +
+  xlab("Gene Length") +
+  ylab("Protein Length") 
+```
+
+Instead of datapoints that represent different regions having different colours, they now have different shapes
+
+In addition to `geom_point()` there are many other geoms that can be used to produce different plots. It's also possible (and common) to "layer" geoms on top of each other. We do this by adding a new geom in a separate line. For example, to add a line of best fit to your scatterplot, run the following
+
+```{r line of best fit}
+ggplot(uniprot_data, aes(x = Gene.Length, y = Protein.Length)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  xlab("Gene Length") +
+  ylab("Protein Length") 
+```
+
+We add `geom_smooth()` right after `geom_point`. By stating that `method = "lm"` we plot a linear fit. There are other ways to fit the data. To learn more about these additional options, refer to the `geom_smooth()` help page by typing `?geom_smooth()` into your console
+
+## Use flipbooks to show how to make other types of plots
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

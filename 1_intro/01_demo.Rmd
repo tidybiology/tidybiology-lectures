@@ -1,0 +1,22 @@
+#setup
+```{r}
+rm(list=ls()) #clear environment
+```
+
+
+#rstudio demo
+```{r}
+10*10
+
+10*1
+10*2
+10*3
+
+c(1, 2, 3) * 10
+
+x <- c(1, 2, 3)
+x * 10
+
+"x" * 10
+```
+
