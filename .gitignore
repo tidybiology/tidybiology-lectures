@@ -10,5 +10,5 @@ datasets/
 tmp/
 00*
 7*
-6*
 */.DS_Store
+*.[key]

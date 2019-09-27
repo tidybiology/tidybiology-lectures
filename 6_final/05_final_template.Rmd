@@ -1,0 +1,60 @@
+---
+title: "Tidybiology Final Project"
+author: "YOUR NAME HERE"
+date: "`r format(Sys.time(), '%B %d, %Y')`" #put in quotes to make YAML recognize it
+---
+## Load libraries
+```{r setup}
+
+#uncomment (or select) to clear environment; good for provenance
+rm(list=ls()) 
+```
+
+## Import data
+DESCRIBE YOUR DATA
+```{r import}
+#IMPORT YOUR DATA
+#MAKE SURE TO GET THE CODE CHUNK OPTIONS SET
+```
+
+## Take a `glimpse` into the data in the dataframe
+DESCRIBE WHAT YOU SEE
+```{r glimpse}
+#DEPENDING ON DATA, NOT TOTALLY NECESSARY
+```
+## EDA
+EXPLORATORY DATA ANALYSIS
+```{r}
+#COMMENCE ROLLING
+#MAKE COMMENTS
+#WRITE WHAT YOU SEE
+```
+
+## EDA Graph  
+BEGIN TO EXPLORE HOW YOU MIGHT PLOT IT. OK TO SHOW YOUR FAILURES, OR HALF-FINISHED PRODUCTS HERE.
+```{r}
+#FIRST I FAILED. 
+```
+  
+## Final Graph
+SET UP THE BIG FINALE
+```{r final_graph}
+#MAKE IT SHINE
+```
+
+## Conclusions
+WHAT WOULD YOU CONLCUDE FROM YOUR NEW OBSERVATION?
+  
+## Prioritized follow-up studies
+WHAT WOULD YOU DO TO FOLLOW-UP?
+
+## Acknolwedgements
+SHOUT OUTS FOR PACKAGES, INSPIRATION, CLASSMATES, OR EVEN Y0UR INSTRUCTORS! ;]
+
+#Session information for provenance and reproducibility
+```{r}
+#PROBABLY BEST TO LEAVE THIS HERE, BUT NO NEED TO PRINT IN THE FINAL REPORT.
+utils:::print.sessionInfo(sessionInfo()[-8]) 
+#You can remove an item from sessionInfo(), which is a list with a class attribute, by printing the resulting object omitting one of the list items (omitted list of packages installed, but not loaded)
+```
+
