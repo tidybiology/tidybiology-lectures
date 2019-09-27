@@ -10,7 +10,7 @@ library(here)
 ## Import data
 This is the code chunk that imports data. We will discuss how this code works in the next few sessions. All you need to know for now is that this imports an `R object` into your environment. Look to the right at the "Environment" tab and see a new object called `genome`. 
 ```{r import}
-genome <- read_csv(here::here("class", "1_intro", "genome.csv"), col_names = TRUE)
+genome <- read_csv(here::here("1_intro", "genome.csv"), col_names = TRUE)
 #cleaning step, required to relevel chromosomes in proper order
 chromosome_levels <- c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "X", "Y")
 genome$chromosome <- fct_relevel(genome$chromosome, chromosome_levels)
