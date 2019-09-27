@@ -1,0 +1,89 @@
+---
+title: "Tidybiology: Class 5 Report Exercise"
+subtitle: "Favorite Gene"
+output: html_document  
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(janitor)
+library(here)
+library(viridis)
+
+#clear environment
+#rm(list=ls()) 
+
+#import
+raw <- read_tsv(here::here("5_markdown", "uniprot-filtered-reviewed%3Ayes+AND+organism%3A%22Homo+sapiens+%28Human%29+%5B96--.tab"), col_names = TRUE) %>% 
+  clean_names() %>% 
+  select(-status, -entry_name) %>% 
+  separate(gene_names, into = c("gene", "alt_gene_name"), sep = " ") %>% 
+  arrange(gene)
+
+#clean
+subcell <- raw %>%
+  filter(str_detect(subcellular_location_cc, "SUBCELLULAR")) %>% 
+  mutate(subcellular_location_cc = str_remove_all(subcellular_location_cc, "SUBCELLULAR LOCATION\\: ")) %>%
+  separate(subcellular_location_cc, into = c("subcellular_location_cc"), sep = "Note") %>% 
+  separate(subcellular_location_cc, into = c("subcellular_location_cc"), sep = "\\;") %>% 
+  separate(subcellular_location_cc, into = c("subcellular_location_cc"), sep = "\\{") %>% 
+  separate(subcellular_location_cc, into = c("subcellular_location_cc"), sep = "\\,") %>% 
+  separate(subcellular_location_cc, into = c("subcellular_location_cc"), sep = "\\.") %>% 
+  separate(subcellular_location_cc, into = c("temp", "subcellular_location_cc"), sep = "\\:", fill = "left") %>% 
+  select(-temp)
+
+#because of cleaning, some locations were listed as gene names; easy way to omit is if they are a single instance
+omit <- subcell %>% 
+  count(subcellular_location_cc, sort = TRUE) %>% 
+  filter(n == 1) %>% 
+  pull(subcellular_location_cc)
+
+'%ni%' <- Negate('%in%') #negate 'in' operator
+
+subcell <- subcell %>% 
+  filter(subcellular_location_cc %ni% omit) %>% #single instances
+  filter(str_length(subcellular_location_cc) > 0) #length is 0 for a few instance; omit
+
+subcell$subcellular_location_cc <- str_trim(subcell$subcellular_location_cc, side = "both") #make it so that white space does not make separate categories
+```
+
+```{r students}
+##### STUDENTS START HERE #####
+
+#Which subcellular locations have most annotated proteins?
+subcell %>% 
+  count(subcellular_location_cc, sort = TRUE)
+
+#Store an object to call below
+top <- subcell %>% 
+  count(subcellular_location_cc, sort = TRUE) %>% 
+  top_n(1)
+
+#Store favorite gene
+fav <- subcell %>% 
+  filter(gene == "MDH1")
+```
+  
+  
+The **compartment** has the highest number of protein coding genes, with **number** annotated in this compartment. My favorite gene is **favorite gene**, which encodes a protein that is primarily located in the **compartment** is **length** amino acids long.
+  
+  
+```{r graph, warning=FALSE}
+#change this code chunk so only the plot is shown on the knitted report
+subcell %>% 
+  group_by(subcellular_location_cc) %>% 
+  ggplot(aes(x = fct_rev(fct_infreq(fct_lump(subcellular_location_cc, 10))))) +
+  geom_histogram(aes(fill = fct_rev(fct_infreq(fct_lump(subcellular_location_cc, 10)))), stat = "count", show.legend = FALSE) +
+  coord_flip() +
+  labs(x = "", y = "Count", title = "Number of proteins in each cellular compartment") +
+  scale_fill_viridis(discrete = TRUE, direction = -1) +
+  theme_minimal() +
+  NULL
+```
+
+
+```{r provenance, include=FALSE}
+#Session information for provenance and reproducibility
+utils:::print.sessionInfo(sessionInfo()[-8]) 
+#You can remove an item from sessionInfo(), which is a list with a class attribute, by printing the resulting object omitting one of the list items (omitted list of packages installed, but not loaded)
+```

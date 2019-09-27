@@ -19,6 +19,7 @@ rm(list=ls())
 I first imported genome summary data, which was originally scraped from [a Wikipedia entry about the human genome](https://en.wikipedia.org/wiki/Human_genome). 
 ```{r scrape, eval=FALSE, include=FALSE}
 #alt code chunk to scrape directly
+#STUDENTS: you can delete this code chunk
 library(rvest)
 library(janitor)
 
@@ -52,11 +53,11 @@ write_csv(genome, path = here::here("genome.csv"))
 
 ```{r import}
 genome <- read_csv(here::here("5_markdown", "genome.csv"), col_names = TRUE)
-#cleaning step, required to relevel chromosomes in proper order
+#cleaning step, required to put ("relevel") chromosomes in proper order
 chromosome_levels <- c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "X", "Y")
 genome$chromosome <- fct_relevel(genome$chromosome, chromosome_levels)
 
-#add some new variables
+#add some new variables; went back to add these after EDA below.
 genome <- genome %>% 
   mutate(percent_var = variations/basepairs) %>% #this adds a new column called percent_var to calculate the number of variations/basepairs
   mutate(xy = if_else(str_detect(chromosome, "X") | str_detect(chromosome, "Y"), TRUE, FALSE))  #adds a boolean for whether this is an XY chromosome or not to call them out in the graph
@@ -163,3 +164,10 @@ Chromatin states are known to influence genomic variation. Therefore, I would li
 
 ## Acknolwedgements
 I would like to acknowledge Cedric Scherer for [plot inspiration](https://cedricscherer.netlify.com/2019/05/17/the-evolution-of-a-ggplot-ep.-1/), @garretgrom, @hadleywickham, and the @rstuio team for making the tidyverse packages easy to use, and you all for reaching the end of the class!
+
+#Session information for provenance and reproducibility
+```{r}
+utils:::print.sessionInfo(sessionInfo()[-8]) 
+#You can remove an item from sessionInfo(), which is a list with a class attribute, by printing the resulting object omitting one of the list items (omitted list of packages installed, but not loaded)
+```
+
