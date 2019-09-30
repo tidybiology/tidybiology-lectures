@@ -109,17 +109,11 @@ I chose the lollipop plot method to visualize the difference between each chromo
 mean_variation <- mean(genome$percent_var)
 
 #this is a string that labels the graph using the annotate() layer
-desc <- c("The XY Chromosomes have lower genomic varation than the others")
+desc <- c("The Sex Chromosomes Have Lower Genomic Varation Than The Others")
 
 #xy var
 x_var <- genome %>% filter(chromosome == "X") %>% select(percent_var) %>% pull()
 y_var <- genome %>% filter(chromosome == "Y") %>% select(percent_var) %>% pull()
-
-#this is code to draw a path (line) on the graph to match the style of ggforce()
-path <- tibble(
-  x = c(.03, .03, .029, mean_variation),
-  y = c(18.5, 20.5, 21.5, 21.5)
-)
 
 #this is code to draw arrows
 arrows <- tibble(
@@ -129,32 +123,56 @@ arrows <- tibble(
   y2 = c(2, 2.5)
 )
 
+#need a different arrow set for negative curvature
+arrows2 <- tibble(
+  x1 = c(.02),
+  x2 = c(mean_variation),
+  y1 = c(18.5),
+  y2 = c(21.5)
+)
+
 ggplot(genome, aes(x = percent_var, y = fct_rev(chromosome))) +
+  coord_cartesian(ylim = c(-0.5, 24.5), xlim = c(0, .07)) +
   geom_vline(aes(xintercept = mean_variation), color = "gray70", size = 0.6) +
+  #geom_vline(aes(xintercept = 0), color = "gray70", size = 0.1) +
   geom_segment(aes(y = fct_rev(chromosome), yend = fct_rev(chromosome), x = mean_variation, xend = percent_var), size = 0.4, color = "gray70") +
-  geom_mark_ellipse(aes(filter = chromosome == "Y", label = 'Sex Chromosomes', 
-                        description = desc, fill = xy)) +
+  geom_mark_ellipse(aes(filter = chromosome == "Y", 
+                        #label = 'Sex Chromosomes', 
+                        #description = desc, 
+                        fill = xy)) +
   geom_mark_ellipse(aes(filter = chromosome == "X", fill = xy)) +
-  geom_point(size = 3, color = "gray20") +
+  geom_point(size = 5, fill = "white", color = "black", stroke = 1) +
   theme_minimal() +
-  labs(x = "Variation (percent)", y = "Chromosome", title = "Genomic variaion is lowest on the human X and Y chromosomes", subtitle = "Comparing number of variations to number of base pairs on human chromosomes", caption = "Data from Wikipedia | Plot from @matthewhirschey") +
-  annotate("text", x = 0.03, y = 17, size = 4, color = "gray20",
+  labs(x = "Variation (%, variation/basepairs)", y = "", title = desc, subtitle = "Assessing genomic variation on each human chromosome", caption = "Data from Wikipedia | Plot from @matthewhirschey") +
+  annotate("text", x = 0.02, y = 17, size = 4, color = "gray60",
            label = glue::glue("Variation average\n{round(mean_variation*100, 1)}%")) +
-  geom_path(data = path, aes(x = x, y = y)) +
-  theme(legend.position = "none") + #removes the lengend
-  coord_cartesian(ylim = c(-0.15, 24)) +
-  annotate("text", x = 0.03, y = 6, size = 3, color = "gray60",
+  annotate("text", x = 0.03, y = 6, size = 4, color = "gray60",
            label = glue::glue("X variation\n{round(x_var*100, 1)}%")) +
-  annotate("text", x = 0.014, y = 3.2, size = 3, color = "gray60",
+  annotate("text", x = 0.014, y = 3.2, size = 4, color = "gray60",
            label = glue::glue("Y variation\n{round(y_var*100, 1)}%")) +
   geom_curve(data = arrows, aes(x = x1, y = y1, xend = x2, yend = y2),
              arrow = arrow(length = unit(0.07, "inch")), size = 0.4,
              color = "gray60", curvature = 0.2) +
-  scale_x_continuous(labels = c(0, 2, 4, 6)) +
+  geom_curve(data = arrows2, aes(x = x1, y = y1, xend = x2, yend = y2),
+             arrow = arrow(length = unit(0.07, "inch")), size = 0.4,
+             color = "gray60", curvature = -0.3) +
+  geom_text(aes(label = fct_rev(chromosome)), color = "white", size = 3, fontface = "bold") +
+  scale_x_continuous(breaks = seq(0, .06, .01),
+                     labels = seq(0, 6, 1)) +
+  theme(legend.position = "none") + #removes the lengend
+  theme(panel.grid.major.x = element_line(color = "gray", size = 0.1),
+        panel.grid.minor.x = element_line(color = "white"),
+        panel.grid.major.y = element_line(color = "white"),
+        #panel.grid.minor = element_line(colour="gray20", size=0.5), 
+        axis.text.y = element_blank()) + 
   NULL
 
+#links
+#https://ggplot2.tidyverse.org/reference/theme.html
+#https://ggplot2.tidyverse.org/reference/element.html
+
 #save your new plot to have an image for your final presentation
-ggsave(here::here("5_markdown", "variation.png"), plot = last_plot(), height = 5, width = 7, units = "in", dpi = 300) #plan on changing the width:height ratio for your own plot
+ggsave(here::here("6_final", "variation.png"), plot = last_plot(), height = 5, width = 7, units = "in", dpi = 300) #plan on changing the width:height ratio for your own plot
 ```
 
 ## Conclusions
