@@ -1,0 +1,44 @@
+---
+title: "ggplot Class Workshop/Homework"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+```{r}
+genome<-read_feather("genome.feather")
+```
+
+
+Using the uniprot_base dataset, make a simple histogram of either Gene number or Protein number
+```{r}
+#tip: try log transforming your variable to see how it changes the visualization of the data
+
+
+```
+
+
+Using the genome dataset, make a scatterplot comparing chromosome length and centromere position
+```{r}
+
+```
+
+Add labels to the centrosomes with the lowest and highest centromere positions
+```{r}
+
+```
+
+Change the size and/or shape of the points
+```{r}
+
+```
+
+Add all the appropriate labels to your graph
+```{r}
+
+```
+
+
+

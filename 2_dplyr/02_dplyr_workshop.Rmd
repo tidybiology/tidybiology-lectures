@@ -1,0 +1,135 @@
+---
+title: "02_workshop"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Part 1
+
+You will be using the `genome` dataset to answer all the following questions
+
+Add your answers (text and/or code chunks as required) in the space after each question
+
+## Please answer the following questions
+
+How would you download and read the Dplyr vignette in the Tidybio package?
+
+```{r}
+
+```
+
+How would you load the `genome` datset from the Tidybio package?
+
+```{r}
+
+```
+
+What type of object is `genome`?
+
+```{r}
+
+```
+
+Convert `genome` to a tbl
+
+```{r}
+
+```
+
+
+How many observations and variables does `genome` contain?
+
+```{r}
+
+```
+
+What are the top five chromosomes in terms of the number of protein coding genes (look at the `protein_codinggenes` variable)? Based on your output, would you say that chromosome length is proportional to the number of protein coding genes?
+
+```{r}
+
+```
+
+Using the `protein_codinggenes` and `pseudo_genes` variables, create a new variable called `total_genes` that contains the sum of protein coding genes and pseudogenes
+
+```{r}
+
+```
+
+Similarly, create a new variable called `total_rna` that contains the sum of all the different rna types i.e. the summ of all variables whose name ends in `_rna`
+
+```{r}
+
+```
+
+Make a table that contains the mean of `total_genes` and `total_rna`
+
+```{r}
+
+```
+
+How many chromosomes have a higher than average total number of genes? Type out (or copy/paste) the names of these chromosomes
+
+```{r}
+
+```
+
+## Part 2
+
+You will be using the `uniprot_base` dataset to answer all the following questions
+
+## Please answer the following questions
+
+How would you load the `uniprot_base` datset from the Tidybio package?
+
+```{r}
+
+```
+
+What type of object is `uniprot_base`?
+
+```{r}
+
+```
+
+Convert `uniprot_base` to a tbl
+
+```{r}
+
+```
+
+How many observations and variables does `uniprot_base` contain?
+
+```{r}
+
+```
+
+What are the shortest and longest proteins? What are the shortest and longest genes? Are they the same?
+
+```{r}
+
+```
+
+
+What is the difference in the lengths of the shortest and longest proteins?
+
+```{r}
+
+```
+
+How many proteins of above-average length are in `uniprot_base`?
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
