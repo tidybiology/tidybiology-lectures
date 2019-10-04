@@ -11,7 +11,7 @@ library(glue)
 library(ggrepel)
 library(ggforce)
 library(devtools)
-#devtools::install_github("hirscheylab/tidybiology")
+#devtools::install_github("hirscheylab/tidybiology", upgrade = c("always"))
 library(tidybiology)
 
 #uncomment (or select) to clear environment; good for provenance
@@ -21,14 +21,14 @@ rm(list=ls())
 ## Import data
 I first loaded chromosome summary data, which was originally scraped from [a Wikipedia entry about the human chromosome](https://en.wikipedia.org/wiki/Human_chromosome).  
 ```{r import, include=FALSE}
-data(package = "tidybiology")
+#data(package = "tidybiology")
 data(chromosome)
 #View(chromosome)
 
 #add some new variables; went back to add these after EDA below.
 chromosome <- chromosome %>% 
   mutate(percent_var = variations/basepairs) %>% #this adds a new column called percent_var to calculate the number of variations/basepairs
-  mutate(xy = if_else(str_detect(chromosome, "X") | str_detect(chromosome, "Y"), TRUE, FALSE))  #adds a boolean for whether this is an XY chromosome or not to call them out in the graph
+  mutate(xy = if_else(str_detect(id, "X") | str_detect(id, "Y"), TRUE, FALSE))  #adds a boolean for whether this is an XY chromosome or not to call them out in the graph
 ```
 
 ## Take a `glimpse` into the data in the dataframe
@@ -45,12 +45,12 @@ ggplot(chromosome, aes(x = protein_codinggenes, y = basepairs)) +
   geom_point(color = "darkblue", size = 3) +
   labs(x = "Protine Coding Genes (#)", y = "Basepairs (Millions)", title = "Longer chromosomes have more protein coding genes in humans", subtitle = "Number of basepairs compared to protein coding genes for each chromosome", caption = "Data from Wikipedia | Plot from @matthewhirschey") +
   scale_y_continuous(labels = c(100, 150, 200, 250)) +
-  geom_text_repel(aes(label = chromosome)) +
+  geom_text_repel(aes(label = id)) +
   theme_minimal() +
   NULL
 
 #variation EDA
-chromosome %>% mutate(percent_var = variations/basepairs) %>% select(chromosome, percent_var) %>% arrange(percent_var)
+chromosome %>% mutate(percent_var = variations/basepairs) %>% select(id, percent_var) %>% arrange(percent_var)
 
 #Y chromosome has much* less variation. Let's see what this looks like...
 ```
@@ -64,7 +64,7 @@ ggplot(chromosome, aes(x = basepairs, y = variations)) +
   #labs(x = "Number of Basepairs", y = "Number of Genomic Variants", title = "Genomic Variaion is lowest on the human X and Y chromosomes", subtitle = "Comparison ", caption = "Data from Wikipedia | Plot from @hirscheylab") +
   theme_minimal() +
   #scale_y_continuous(labels = c(50, 100, 150, 200, 250)) +
-  geom_text_repel(aes(label = chromosome)) +
+  geom_text_repel(aes(label = id)) +
   NULL
 ```
   
@@ -80,8 +80,8 @@ mean_variation <- mean(chromosome$percent_var)
 desc <- c("The Sex Chromosomes Have Lower Genomic Varation Than Other Chromosomes")
 
 #xy var
-x_var <- chromosome %>% filter(chromosome == "X") %>% select(percent_var) %>% pull()
-y_var <- chromosome %>% filter(chromosome == "Y") %>% select(percent_var) %>% pull()
+x_var <- chromosome %>% filter(id == "X") %>% select(percent_var) %>% pull()
+y_var <- chromosome %>% filter(id == "Y") %>% select(percent_var) %>% pull()
 
 #this is code to draw arrows
 arrows <- tibble(
@@ -99,16 +99,16 @@ arrows2 <- tibble(
   y2 = c(21.5)
 )
 
-ggplot(chromosome, aes(x = percent_var, y = fct_rev(chromosome))) +
+ggplot(chromosome, aes(x = percent_var, y = fct_rev(id))) +
   coord_cartesian(ylim = c(-0.5, 24.5), xlim = c(0, .07)) +
   geom_vline(aes(xintercept = mean_variation), color = "gray70", size = 0.6) +
   #geom_vline(aes(xintercept = 0), color = "gray70", size = 0.1) +
-  geom_segment(aes(y = fct_rev(chromosome), yend = fct_rev(chromosome), x = mean_variation, xend = percent_var), size = 0.4, color = "gray70") +
-  geom_mark_ellipse(aes(filter = chromosome == "Y", 
+  geom_segment(aes(y = fct_rev(id), yend = fct_rev(id), x = mean_variation, xend = percent_var), size = 0.4, color = "gray70") +
+  geom_mark_ellipse(aes(filter = id == "Y", 
                         #label = 'Sex Chromosomes', 
                         #description = desc, 
                         fill = xy)) +
-  geom_mark_ellipse(aes(filter = chromosome == "X", fill = xy)) +
+  geom_mark_ellipse(aes(filter = id == "X", fill = xy)) +
   geom_point(size = 5, fill = "white", color = "black", stroke = 1) +
   theme_minimal() +
   labs(x = "Variation (%, variation/basepairs)", y = "", title = desc, subtitle = "Assessing genomic variation on each human chromosome", caption = "Data from Wikipedia | Plot from @matthewhirschey") +
@@ -124,7 +124,7 @@ ggplot(chromosome, aes(x = percent_var, y = fct_rev(chromosome))) +
   geom_curve(data = arrows2, aes(x = x1, y = y1, xend = x2, yend = y2),
              arrow = arrow(length = unit(0.07, "inch")), size = 0.4,
              color = "gray60", curvature = -0.3) +
-  geom_text(aes(label = fct_rev(chromosome)), color = "white", size = 3, fontface = "bold") +
+  geom_text(aes(label = fct_rev(id)), color = "white", size = 3, fontface = "bold") +
   scale_x_continuous(breaks = seq(0, .06, .01),
                      labels = seq(0, 6, 1)) +
   theme(legend.position = "none") + #removes the lengend

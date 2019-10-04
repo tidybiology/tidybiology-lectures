@@ -11,7 +11,8 @@ This is an R Markdown file. It contains plain text interspersed with grey chunks
 # This chunk uses the code plot(cars) to plot a data set.
 # To run the code, click the Green play button at the
 # top right of this chunk. Try it!
-plot(cars)
+library(tidybiology)
+plot(simplechromosome)
 ```
 
 Nice! The results of a code chunk will appear beneath the chunk. You can click the x above the results to make them go away, but let's not do that.
