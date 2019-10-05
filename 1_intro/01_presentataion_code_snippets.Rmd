@@ -8,6 +8,11 @@ data$entry_name
 
 entries <- data$entry_name
 
+chromosome$id
+
+ids <- chromosome$id
+
+
 ```
 
 
@@ -35,15 +40,26 @@ morning_routine <- wakeup(self) %>%
   fmk() %>% 
   go(to = "work")
 
-data %>% 
-  select("gene", "expression_level_control", "expression_level_experimental") %>% 
-  mutate(differential_expression_level = expression_level_experimental - expression_level_control) %>% 
-  arrange(desc(differential_expression_level))
+#data %>% 
+#  select("gene", "expression_level_control", "expression_level_experimental") %>% 
+#  mutate(differential_expression_level = expression_level_experimental - expression_level_control) %>% 
+#  arrange(desc(differential_expression_level))
 
-ranked_dge <- data %>% 
-  select("gene", "expression_level_control", "expression_level_experimental") %>% 
-  mutate(differential_expression_level = expression_level_experimental - expression_level_control) %>% 
-  arrange(desc(differential_expression_level))
+#ranked_dge <- data %>% 
+#  select("gene", "expression_level_control", "expression_level_experimental") %>% 
+#  mutate(differential_expression_level = expression_level_experimental - expression_level_control) %>% 
+#  arrange(desc(differential_expression_level))
 
+
+chromosome %>% 
+  select("id", "variations", "basepairs") %>% 
+  mutate(percent_var = variations/basepairs) %>% 
+  arrange(desc(percent_var))
+
+
+chromosome_var <- chromosome %>% 
+  select("id", "variations", "basepairs") %>% 
+  mutate(percent_var = variations/basepairs) %>% 
+  arrange(desc(percent_var))
 ```
 

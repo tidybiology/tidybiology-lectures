@@ -3,7 +3,7 @@ title: "Tidybiology Final Project"
 author: "YOUR NAME HERE"
 date: "`r format(Sys.time(), '%B %d, %Y')`" #put in quotes to make YAML recognize it
 ---
-## Load libraries
+## Load libraries, such as tidyverse and tidybiology
 ```{r setup}
 
 #uncomment (or select) to clear environment; good for provenance
