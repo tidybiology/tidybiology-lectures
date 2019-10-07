@@ -5,7 +5,6 @@
 /.DS_Store
 *.nb.html
 *.Rproj
-ideas/
 datasets/
 tmp/
 00*
