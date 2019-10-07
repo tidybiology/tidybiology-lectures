@@ -1,0 +1,107 @@
+---
+title: "Vignette Title Goes Here"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#load appropriate packages
+library(tidyverse)
+library(kableExtra)
+```
+### **What would I google to land on this page?**
+"What is this function used for? (i.e. Google terms)"  
+
+### Packages
+```{r, eval=FALSE}
+library(tidyverse)
+library(tidyr)
+```
+
+```{r, include=FALSE}
+getwd()
+```
+
+### Description
+A plain text description of the function
+
+![this is how to include an image caption](imagefilename.png)  
+**bonus** points for making your own image!
+  
+### Function
+```{r form, eval = FALSE}
+#This is the simplist form of your function
+function(data, arg1, arg2,...)
+```
+
+## **Required input**
+What arguments are required for this function to run:  
+
+* **data**: this is the data table to be used  
+
+* **x**: argument description
+
+* **y**: argument description
+
+* **other**: argument description
+
+#### Example 1
+For this simple example we have a ...
+```{r example1 table, echo=FALSE}
+#insert data here
+
+
+```
+
+
+What is the goal of this example in relation to the example dataset?
+
+```{r pivotex1, eval=FALSE}
+function(example1, x, y) #showing the code that you will use
+```
+```{r pivotex1 code, echo=FALSE}
+# runthe code/format appropriately
+#function(example1, x, y)
+
+#knitr::kable(Protein_ModEx1)%>%
+  #kable_styling(bootstrap_options = "striped", full_width = F)%>%
+  #column_spec(1, bold = T, color = "gray")%>%
+   #column_spec(2, bold = T, color = "white", background = "red")%>%
+   #column_spec(3, bold = T, color = "white", background = "blue")
+```
+
+
+## **Optional Input**
+Below is a summary of the most useful optional input. More option can be found in the help page and resources listed at the end of this page.
+
+* **a**  
+    description
+    
+* **b**  
+    description
+    
+#### Example 2
+We can perform the same operation as Example 1 using some optional input information. Here, we add....
+
+```{r pivotex2, eval=FALSE}
+function(example2, x, y, a, b) #example 2 chunk to be displayed
+```
+```{r pivotex2 code, echo=FALSE}
+# runthe code/format appropriately
+
+
+#knitr::kable(Protein_ModEx1)%>%
+  #kable_styling(bootstrap_options = "striped", full_width = F)%>%
+  #column_spec(1, bold = T, color = "gray")%>%
+   #column_spec(2, bold = T, color = "white", background = "red")%>%
+   #column_spec(3, bold = T, color = "white", background = "blue")
+```
+
+### **To learn more**
+Include links to reference pages or other useful resources you found 
+
+
+

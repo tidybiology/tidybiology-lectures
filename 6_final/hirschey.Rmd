@@ -83,7 +83,7 @@ desc <- c("The Sex Chromosomes Have Lower Genomic Varation Than Other Chromosome
 x_var <- chromosome %>% filter(id == "X") %>% select(percent_var) %>% pull()
 y_var <- chromosome %>% filter(id == "Y") %>% select(percent_var) %>% pull()
 
-#this is code to draw arrows
+#this is code to draw arrows for XY chromosome labels
 arrows <- tibble(
   x1 = c(.03, .01),
   x2 = c(.034, 0.006),
@@ -91,7 +91,7 @@ arrows <- tibble(
   y2 = c(2, 2.5)
 )
 
-#need a different arrow set for negative curvature
+#need a different arrow set for negative curvature of y-axis arrow
 arrows2 <- tibble(
   x1 = c(.02),
   x2 = c(mean_variation),
@@ -118,12 +118,14 @@ ggplot(chromosome, aes(x = percent_var, y = fct_rev(id))) +
            label = glue::glue("X variation\n{round(x_var*100, 1)}%")) +
   annotate("text", x = 0.014, y = 3.2, size = 4, color = "gray60",
            label = glue::glue("Y variation\n{round(y_var*100, 1)}%")) +
+  annotate("text", x = 0.042, y = 24, size = 3, color = "black",
+           label = "CHROMOSOME", fontface = "bold") +
   geom_curve(data = arrows, aes(x = x1, y = y1, xend = x2, yend = y2),
              arrow = arrow(length = unit(0.07, "inch")), size = 0.4,
-             color = "gray60", curvature = 0.2) +
+             color = "gray60", curvature = 0.25) +
   geom_curve(data = arrows2, aes(x = x1, y = y1, xend = x2, yend = y2),
              arrow = arrow(length = unit(0.07, "inch")), size = 0.4,
-             color = "gray60", curvature = -0.3) +
+             color = "gray60", curvature = -0.2) +
   geom_text(aes(label = fct_rev(id)), color = "white", size = 3, fontface = "bold") +
   scale_x_continuous(breaks = seq(0, .06, .01),
                      labels = seq(0, 6, 1)) +

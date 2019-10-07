@@ -14,14 +14,16 @@ library(tidyverse)
 library(feather)
 
 #install.packages("devtools")
-#devtools::install_github("hirscheylab/tidybiology")
+devtools::install_github("hirscheylab/tidybiology")
 
-#data(package="tidybiology")
+library(tidybiology)
+data(package="tidybiology")
 ```
 
 ```{r, include=FALSE}
 load("uniprot_region.rda")
-genome<-read_feather("genome.feather")
+
+data(chromosome)
 
 ```
 
@@ -43,7 +45,7 @@ ggplot(data)+ #this will generate a blank plot for your data. At this point, ggp
 
 Take a moment to look back at the code you ran previously. You can see that in that code we assigned a dataset and the information we needed to map it to a scatterplot.
 ```{r}
-ggplot(data = genome) +
+ggplot(data = chromosome) +
  	 geom_point(mapping=aes(x = length_mm, y = protein_codinggenes))
 
 ```
@@ -52,7 +54,7 @@ A note on ggplot style: while you can put the + at the beginning of the next lin
 
 How does this chunk of code differ from the previous chunk?
 ```{r}
-ggplot(genome) +
+ggplot(chromosome) +
  	 geom_point(aes(x = length_mm, y = protein_codinggenes))
 ```
 
@@ -219,6 +221,27 @@ q + facet_grid(Cell.Region ~ .)
 q + facet_wrap(~ Cell.Region)
 
 ```
+
+##Themes
+You can change the overal color scheme of the background of your plot using theme() functions
+
+compare the following graphs
+```{r}
+ggplot(uniprot_region)+
+  geom_point(aes(x=log(Gene.Length), y=log(Protein.Length)))
+
+ggplot(uniprot_region)+
+  geom_point(aes(x=log(Gene.Length), y=log(Protein.Length)))+
+  theme_bw()
+```
+
+One more theme
+```{r}
+ggplot(uniprot_region)+
+  geom_point(aes(x=log(Gene.Length), y=log(Protein.Length)))+
+  theme_dark()
+```
+You can find more ggplot themes on the ggplot reference page.
 
 ##Saving plots using ggsave
 

@@ -1,0 +1,31 @@
+---
+title: ""
+subtitle: "Class 5 homework"
+---
+## Load libraries
+```{r setup}
+library(tidyverse)
+library(tidybiology)
+```
+
+## Explore
+Before importing, view each dataframe available in the `tidybiology` package. 
+```{r view}
+data(package = "tidybiology")
+#Q: How many data sets are contained within?
+#A: 
+```
+
+## Summarize each of the dataframes
+
+### Chromosome  
+24x14 data frame containing summary information of the human chromosome  
+```{r echo=FALSE}
+data("chromosome") #Load one dataset
+glimpse(chromosome)
+```
+
+
+### Next dataframe
+Summary sentence of the dataframe
+Insert code chunk

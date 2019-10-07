@@ -1,0 +1,89 @@
+---
+title: "Tidybiology: Class 5 Report Exercise"
+subtitle: "My favorite gene is `r params$gene`"
+output: html_document  
+params: 
+  gene: "MDH1"
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(janitor)
+library(here)
+library(viridis)
+library(ggridges)
+
+#clear environment
+#rm(list=ls()) 
+
+#Set theme
+theme_set(theme_light())
+
+#import
+raw <- read_tsv(here::here("5_markdown", "uniprot-filtered-reviewed%3Ayes+AND+organism%3A%22Homo+sapiens+%28Human%29+%5B96--.tab"), col_names = TRUE) %>% 
+  clean_names() %>% 
+  select(-status, -entry_name) %>% 
+  separate(gene_names, into = c("gene", "alt_gene_name"), sep = " ") %>% 
+  arrange(gene)
+
+#clean
+subcell <- raw %>%
+  filter(str_detect(subcellular_location_cc, "SUBCELLULAR")) %>% 
+  mutate(subcellular_location_cc = str_remove_all(subcellular_location_cc, "SUBCELLULAR LOCATION\\: ")) %>%
+  separate(subcellular_location_cc, into = c("subcellular_location_cc"), sep = "Note") %>% 
+  separate(subcellular_location_cc, into = c("subcellular_location_cc"), sep = "\\;") %>% 
+  separate(subcellular_location_cc, into = c("subcellular_location_cc"), sep = "\\{") %>% 
+  separate(subcellular_location_cc, into = c("subcellular_location_cc"), sep = "\\,") %>% 
+  separate(subcellular_location_cc, into = c("subcellular_location_cc"), sep = "\\.") %>% 
+  separate(subcellular_location_cc, into = c("temp", "subcellular_location_cc"), sep = "\\:", fill = "left") %>% 
+  select(-temp)
+
+#because of cleaning, some locations were listed as gene names; easy way to omit is if they are a single instance
+omit <- subcell %>% 
+  count(subcellular_location_cc, sort = TRUE) %>% 
+  filter(n == 1) %>% 
+  pull(subcellular_location_cc)
+
+'%ni%' <- Negate('%in%') #negate 'in' operator
+
+subcell <- subcell %>% 
+  filter(subcellular_location_cc %ni% omit) %>% #single instances
+  filter(str_length(subcellular_location_cc) > 0) #length is 0 for a few instance; omit
+
+subcell$subcellular_location_cc <- str_trim(subcell$subcellular_location_cc, side = "both") #make it so that white space does not make separate categories
+
+#####STUDENTS START HERE#####
+
+#Which subcellular locations have most annotated proteins?
+subcell %>% 
+  count(subcellular_location_cc, sort = TRUE)
+
+#Store an object
+top <- subcell %>% 
+  count(subcellular_location_cc, sort = TRUE) %>% 
+  top_n(1)
+
+#calculate average lengths of all proteins
+avg_length <- subcell %>% 
+  group_by(subcellular_location_cc) %>% 
+  summarize(mean_length = mean(length)) %>% 
+  arrange(desc(mean_length))
+
+#Store favorite gene
+fav <- subcell %>% 
+  filter(gene == params$gene)
+
+#store an object to call longer
+longer <- if_else(
+  fav$length > avg_length %>% filter(subcellular_location_cc == fav$subcellular_location_cc) %>% pull(mean_length), "longer", "shorter"
+)
+```
+  
+  
+My favorite gene is `r fav$gene`, which encodes a protein that is primarily located in the `r fav$subcellular_location_cc` is `r fav$length` amino acids long. The average length of proteins in the `r fav$subcellular_location_cc` is `r round(avg_length %>% filter(subcellular_location_cc == fav$subcellular_location_cc) %>% pull(mean_length),0)` amino acids, which makes `r fav$gene` `r longer` than average.
+  
+```{r provenance, include=FALSE}
+#Session information for provenance and reproducibility
+utils:::print.sessionInfo(sessionInfo()[-8]) 
+#You can remove an item from sessionInfo(), which is a list with a class attribute, by printing the resulting object omitting one of the list items (omitted list of packages installed, but not loaded)
+```
