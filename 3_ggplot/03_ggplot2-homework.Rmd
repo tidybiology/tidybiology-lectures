@@ -1,0 +1,45 @@
+---
+title: "ggplot Class Workshop/Homework"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(tidybiolgy)
+```
+
+```{r}
+data("chromosome")
+```
+
+
+Using the chromosome dataset, make a simple histogram of either Gene number or Protein number
+```{r}
+#tip: try log transforming your variable to see how it changes the visualization of the data
+
+
+```
+
+
+Using the genome dataset, make a scatterplot comparing chromosome length and centromere position
+```{r}
+
+```
+
+Paste previous code, and add labels to the centrosomes with the lowest and highest centromere positions
+```{r}
+
+```
+
+Paste previous code, and change the size and/or shape of the points
+```{r}
+
+```
+
+Paste previous code, and add labels to your graph
+```{r}
+
+```
+
+
+

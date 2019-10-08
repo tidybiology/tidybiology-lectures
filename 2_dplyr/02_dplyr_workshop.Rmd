@@ -15,7 +15,7 @@ Add your answers (text and/or code chunks as required) in the space after each q
 
 ## Please answer the following questions
 
-How would you load the `chromosome` datset from the Tidybio package?
+How would you load the `chromosome` datset from the `tidybiology` package?
 
 ```{r}
 

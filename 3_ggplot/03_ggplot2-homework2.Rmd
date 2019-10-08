@@ -1,0 +1,50 @@
+---
+title: "ggplot Class Workshop/Homework 2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+```{r}
+getwd()
+load("uniprot_region.rda")
+```
+
+
+In the following plot, figure out how to hide outliers
+```{r}
+ggplot(uniprot_region, aes(x=Cell.Region, y=log(Protein.Length)))+
+  geom_boxplot()
+
+```
+
+
+Try making a violin plot instead of a box plot
+```{r}
+
+```
+
+Change the fill, but not the outline of the violin plots
+```{r}
+
+```
+
+Add original datapoints underneath the violin plot
+```{r}
+
+```
+
+Change the transparency of the violin plots
+```{r}
+
+```
+
+Add all the appropriate labels to your graph
+```{r}
+
+```
+
+
+

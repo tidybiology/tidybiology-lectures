@@ -3,11 +3,8 @@
 .RData
 .Ruserdata
 /.DS_Store
+*.DS_Store
 *.nb.html
 *.Rproj
-datasets/
 tmp/
 00*
-7*
-*/.DS_Store
-*.[key]
