@@ -1,0 +1,101 @@
+---
+title: "Stringr/RegEx"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(stringr)
+library(tidybiology)
+```
+
+#Stringr 
+
+What is a string? 
+
+A "string" is just a character variable that contains one or more characters.
+
+Often we need to extract information from or wrangle strings them to get the data we need from them, but this can be difficult. To help with this process we will be using stringr, a package that allows you to work with strings in R in a relatively simple manner.. 
+
+Let's start with a simmple example
+
+##Example 1
+For example 1, let's open the protein data from the tidybiology package
+```{r}
+data(proteins)
+glimpse(proteins)
+```
+In this data set, there is a sequence column. This contains the full length AA sequence of the proteins. Let's use a function called string count to count the number of AA's in each of those strings. 
+
+```{r}
+str_count(proteins$sequence)
+```
+str_count() is pretty straightforward, it counts the number of characters in the strings. However, we can ask it to be more specific. 
+
+This time, let's count only the number of lysines (K) in each protein. 
+
+```{r}
+str_count(proteins$sequence, "K")
+```
+
+#Exercise 1
+Use str_count to determine how many instances of a lysine next to a cysteine is
+```{r}
+str_count(proteins$sequence, "KC")
+```
+
+Let's get slightly more complicated. Let's look for patterns within this sequence. For this example, let's look for a specific protein motif. In this case I am going to search for proteins with a cyclin binding motif made up of (S/T)PX(K/R).
+
+Example #2
+Run the following code while considering the following questions:
+1) How is this the same or  different from str_count()?
+2) What does the '.' stand for in this code?
+3) How does this compare to the sequence motif we want to find?
+```{r}
+str_detect(proteins$sequence, "SP.K")
+```
+
+
+In the code chunk a above we used a '.' to indicate that we would accept *any* character in that position. This is an example of a "regular expression" or "regex". regex is a 'language' used to describe patterns in strings. While it is not very intuitive at the start, you can find a handy guide to regex here: https://stringr.tidyverse.org/index.html 
+
+You'll notice that str_detect looks through our string to evaluate whether or not the pattern we input is present. If it is, the output is TRUE, if not it's FALSE whereas str_count() gave us a numeric output.
+
+However, we still have one problem. This pattern only matches one possible version of our motif. 
+
+Let's fix it by starting with the S/T options. Here we will use 2 new input options. First, is the '|'. This tells R that we want either S *or* T. However, the second thing we do is put it in parentheses, which tells R to evaluate that part *first*.
+```{r}
+str_detect(proteins$sequence, "(S|T)P.K")
+```
+While it's difficult to notice, you now have more proteins that are "TRUE".
+
+#Exercise 2
+How would you change the following code to accept K or R in the last position?
+
+```{r}
+str_detect(proteins$sequence, "(S|T)P.K")
+```
+
+To view your output differently, try copying and pasting the code from the above chunk into the empty space below. Now replace the word 'detect' with 'view' 
+```{r}
+
+
+```
+In your output you should see some 'highlighted' squares around the character strings that match your pattern. Do the ones you can see match your pattern?
+ 
+A note: the following code will result in the same output
+```{r}
+str_detect(proteins$sequence, "(S|T)(P.)(K|R)")
+```
+
+So now we know that we can find all the proteins with a Cy motif. Let's use stringr along with a dplyr::mutate() to make a new column.
+
+```{r}
+proteins<- mutate(proteins, cy_motif = str_detect(sequence, "(S|T)(P.)(K|R)"))
+```
+
+These are only a few examples of regex usage, and it can be quite confusing to get used to. There's a nice guide to using regex with stringr on the back of the stringr cheatsheet found here: https://stringr.tidyverse.org/index.html 
+
+
+

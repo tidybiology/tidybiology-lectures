@@ -1,0 +1,38 @@
+---
+title: "Class 4- stringr workshop"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(stringr)
+library(tidybiology)
+```
+
+load the proteins dataset
+```{r}
+
+```
+
+
+Navigate to the following site: https://www.phosphosite.org/
+
+On this site you will see a search bar in the middle of the page with a drop down menu to the immediate left. In the drop down select 'substrates of' and then type the ID of any protein kinase in the box. (need help with a protein? Try mTOR, AKT, or MAPK and pick a protein from the list)
+
+After you search for it, at the top of the output table you'll see text that says 'Show Sequence Logo'. Using this information, search the proteins data set for the motif (or a version of the motif) that your kinase of choice recognizes.
+
+```{r}
+
+```
+
+
+Now add a column to the proteins dataframe using your code. Decide whether you would prefer your output to be numeric or logical. You can even try both
+
+```{r}
+
+```
+
+
+

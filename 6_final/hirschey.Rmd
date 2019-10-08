@@ -116,7 +116,7 @@ ggplot(chromosome, aes(x = percent_var, y = fct_rev(id))) +
            label = glue::glue("Average Genomic Variation\n{round(mean_variation*100, 1)}%")) +
   annotate("text", x = 0.03, y = 6, size = 4, color = "gray60",
            label = glue::glue("X variation\n{round(x_var*100, 1)}%")) +
-  annotate("text", x = 0.014, y = 3.2, size = 4, color = "gray60",
+  annotate("text", x = 0.015, y = 3.2, size = 4, color = "gray60",
            label = glue::glue("Y variation\n{round(y_var*100, 1)}%")) +
   annotate("text", x = 0.042, y = 24, size = 3, color = "black",
            label = "CHROMOSOME", fontface = "bold") +
