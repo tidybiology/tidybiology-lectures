@@ -3120,7 +3120,7 @@ slide:not(.current) .plotly.html-widget{
           </hgroup>
   </slide>
 
-<slide class=""><hgroup><h2>Loading the <code>proteins</code> and <code>subcell</code> datasets into RStudio</h2></hgroup><article  class="build" id="loading-the-proteins-and-subcell-datasets-into-rstudio">
+<slide class=""><hgroup><h2>Loading the <code>proteins</code> and <code>subcell</code> datasets into RStudio</h2></hgroup><article  id="loading-the-proteins-and-subcell-datasets-into-rstudio" class="build">
 
 <p>The datasets can be found in the tidybiology package</p>
 
@@ -3134,7 +3134,7 @@ library(tidybiology)</pre>
 <pre class = 'prettyprint lang-r'>data(proteins)
 data(subcell)</pre>
 
-</article></slide><slide class=""><hgroup><h2>Inspecting the <code>proteins</code> dataset</h2></hgroup><article  class="build" id="inspecting-the-proteins-dataset">
+</article></slide><slide class=""><hgroup><h2>Inspecting the <code>proteins</code> dataset</h2></hgroup><article  id="inspecting-the-proteins-dataset" class="build">
 
 <p>Use the <code>dim()</code> function to see how many rows (observations) and columns (variables) there are</p>
 
@@ -3142,7 +3142,7 @@ data(subcell)</pre>
 
 <pre >## [1] 20430     8</pre>
 
-</article></slide><slide class=""><hgroup><h2>Inspecting the <code>proteins</code> dataset</h2></hgroup><article  class="build" id="inspecting-the-proteins-dataset-1">
+</article></slide><slide class=""><hgroup><h2>Inspecting the <code>proteins</code> dataset</h2></hgroup><article  id="inspecting-the-proteins-dataset-1" class="build">
 
 <p>Use the <code>glimpse()</code> function to see what kinds of variables the dataset contains</p>
 
@@ -3159,7 +3159,7 @@ data(subcell)</pre>
 ## $ length           &lt;dbl&gt; 495, 594, 1474, 1454, 340, 353, 340, 546, 672, …
 ## $ mass             &lt;dbl&gt; 54254, 65202, 163291, 161107, 38754, 40499, 394…</pre>
 
-</article></slide><slide class=""><hgroup><h2>Basic Data Types in R</h2></hgroup><article  class="build" id="basic-data-types-in-r">
+</article></slide><slide class=""><hgroup><h2>Basic Data Types in R</h2></hgroup><article  id="basic-data-types-in-r" class="build">
 
 <p>R has 6 basic data ypes -</p>
 
@@ -3179,7 +3179,7 @@ data(subcell)</pre>
 
 <p><strong>factor</strong>. A <strong>factor</strong> is a collection of <em>ordered</em> character variables</p>
 
-</article></slide><slide class=""><hgroup><h2>Basic Data Types in R</h2></hgroup><article  class="build" id="basic-data-types-in-r-1">
+</article></slide><slide class=""><hgroup><h2>Basic Data Types in R</h2></hgroup><article  id="basic-data-types-in-r-1" class="build">
 
 <p>In addition to the <code>glimpse()</code> function, you can use the <code>class()</code> function to determine the data type of a specific column</p>
 
@@ -3187,7 +3187,7 @@ data(subcell)</pre>
 
 <pre >## [1] &quot;numeric&quot;</pre>
 
-</article></slide><slide class=""><hgroup><h2>(Re)Introducing <code>%&gt;%</code></h2></hgroup><article  class="build" id="reintroducing">
+</article></slide><slide class=""><hgroup><h2>(Re)Introducing <code>%&gt;%</code></h2></hgroup><article  id="reintroducing" class="build">
 
 <p>The <code>%&gt;%</code> operator is a way of &ldquo;chaining&rdquo; together strings of commands that make reading your code easy. The following code chunk illustrates how <code>%&gt;%</code> works</p>
 
@@ -3203,7 +3203,7 @@ data(subcell)</pre>
 
 <p>The above code chunk does the following - it takes you dataset, <code>proteins</code>, and &ldquo;pipes&rdquo; it into <code>select()</code></p>
 
-</article></slide><slide class=""><hgroup><h2>(Re)Introducing <code>%&gt;%</code></h2></hgroup><article  class="build" id="reintroducing-1">
+</article></slide><slide class=""><hgroup><h2>(Re)Introducing <code>%&gt;%</code></h2></hgroup><article  id="reintroducing-1" class="build">
 
 <p>The second line selects just the columns named <code>uniprot_id</code> and <code>length</code> and &ldquo;pipes&rdquo; that into <code>filter()</code>. The final line selects proteins that are longer than 500 amino acids</p>
 
@@ -3215,7 +3215,7 @@ data(subcell)</pre>
 
 <p>Although this is only one line as opposed to three, it’s both more difficult to write and more difficult to read</p>
 
-</article></slide><slide class=""><hgroup><h2>Introducing the main dplyr verbs</h2></hgroup><article  class="build" id="introducing-the-main-dplyr-verbs">
+</article></slide><slide class=""><hgroup><h2>Introducing the main dplyr verbs</h2></hgroup><article  id="introducing-the-main-dplyr-verbs" class="build">
 
 <p>dplyr is a package that contains a suite of functions that allow you to easily manipulate a dataset</p>
 
@@ -3229,7 +3229,7 @@ data(subcell)</pre>
 
 <p>The main verbs we will cover are <code>select()</code>, <code>filter()</code>, <code>arrange()</code>, <code>mutate()</code>, and <code>summarise()</code>. These all combine naturally with <code>group_by()</code> which allows you to perform any operation &ldquo;by group&rdquo;</p>
 
-</article></slide><slide class=""><hgroup><h2><code>select()</code></h2></hgroup><article  class="build" id="select">
+</article></slide><slide class=""><hgroup><h2><code>select()</code></h2></hgroup><article  id="select" class="build">
 
 <p>The <code>select()</code> verb allows you to extract specific columns from your dataset</p>
 
@@ -3246,7 +3246,7 @@ data(subcell)</pre>
 ##   &lt;chr&gt;       &lt;dbl&gt;
 ## 1 P04217        495</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>select()</code></h2></hgroup><article  class="build" id="select-1">
+</article></slide><slide class=""><hgroup><h2><code>select()</code></h2></hgroup><article  id="select-1" class="build">
 
 <p>If you want to select all columns <em>except</em> <code>uniprot_id</code>, run the following</p>
 
@@ -3260,7 +3260,7 @@ data(subcell)</pre>
 ## 1 A1BG      &lt;NA&gt;          &quot;Alpha-1B-g… Alpha-1-B glyco… MSMLVVF…    495
 ## # … with 1 more variable: mass &lt;dbl&gt;</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>select()</code></h2></hgroup><article  class="build" id="select-2">
+</article></slide><slide class=""><hgroup><h2><code>select()</code></h2></hgroup><article  id="select-2" class="build">
 
 <p>Finally, you can provide a range of columns to return two columns and everything in between. For example</p>
 
@@ -3275,14 +3275,14 @@ data(subcell)</pre>
 
 <p>This code selects the following columns - <code>uniprot_id</code>, <code>gene_name</code>, <code>gene_name_alt</code>, and <code>protein_name</code></p>
 
-</article></slide><slide class=""><hgroup><h2><code>select()</code> exercise</h2></hgroup><article  class="build" id="select-exercise">
+</article></slide><slide class=""><hgroup><h2><code>select()</code> exercise</h2></hgroup><article  id="select-exercise" class="build">
 
 <p>Select the following columns - <code>uniprot_id</code>, <code>sequence</code>, <code>length</code>, and <code>mass</code></p>
 
 <pre class = 'prettyprint lang-r'>proteins %&gt;% 
   select(uniprot_id, sequence:mass)</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>filter()</code></h2></hgroup><article  class="build" id="filter">
+</article></slide><slide class=""><hgroup><h2><code>filter()</code></h2></hgroup><article  id="filter" class="build">
 
 <p>The <code>filter()</code> verb allows you to choose rows based on certain condition(s) and discard everything else</p>
 
@@ -3290,7 +3290,7 @@ data(subcell)</pre>
 
 <p>If a row meets the condition of this statement (i.e. is true) then it gets chosen (or &ldquo;filtered&rdquo;). All other rows are discarded</p>
 
-</article></slide><slide class=""><hgroup><h2><code>filter()</code></h2></hgroup><article  class="build" id="filter-1">
+</article></slide><slide class=""><hgroup><h2><code>filter()</code></h2></hgroup><article  id="filter-1" class="build">
 
 <p>Filtering can be performed on categorical data</p>
 
@@ -3299,15 +3299,15 @@ data(subcell)</pre>
   head(1)</pre>
 
 <pre >## # A tibble: 1 x 5
-##   ensembl_prot_id gene_name go_term    location score
-##   &lt;chr&gt;           &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;    &lt;dbl&gt;
-## 1 18S_rRNA        18S_rRNA  GO:0005840 Ribosome  3.39</pre>
+##   ensembl_prot_id gene_name go_term    score location
+##   &lt;chr&gt;           &lt;chr&gt;     &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;   
+## 1 18S_rRNA        18S_rRNA  GO:0005840  3.39 Ribosome</pre>
 
 <p>The code chunk above only selects ribosome-associated proteins</p>
 
 <p>Note that <code>filter()</code> only applies to rows, and has no effect on columns</p>
 
-</article></slide><slide class=""><hgroup><h2><code>filter()</code></h2></hgroup><article  class="build" id="filter-2">
+</article></slide><slide class=""><hgroup><h2><code>filter()</code></h2></hgroup><article  id="filter-2" class="build">
 
 <p>Filtering can also be performed on numerical data</p>
 
@@ -3318,11 +3318,11 @@ data(subcell)</pre>
   head(1)</pre>
 
 <pre >## # A tibble: 1 x 5
-##   ensembl_prot_id gene_name go_term    location           score
-##   &lt;chr&gt;           &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;              &lt;dbl&gt;
-## 1 ENSP00000000233 ARF5      GO:0005575 cellular_component  4.41</pre>
+##   ensembl_prot_id gene_name go_term    score location     
+##   &lt;chr&gt;           &lt;chr&gt;     &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;        
+## 1 ENSP00000263100 A1BG      GO:0005576     5 Extracellular</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>filter()</code></h2></hgroup><article  class="build" id="filter-3">
+</article></slide><slide class=""><hgroup><h2><code>filter()</code></h2></hgroup><article  id="filter-3" class="build">
 
 <p>To filter on multiple conditions, you can write a sequence of <code>filter()</code> commands</p>
 
@@ -3334,11 +3334,11 @@ data(subcell)</pre>
   head(1)</pre>
 
 <pre >## # A tibble: 1 x 5
-##   ensembl_prot_id gene_name go_term    location score
-##   &lt;chr&gt;           &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;    &lt;dbl&gt;
-## 1 ENSP00000053468 MRPS10    GO:0005840 Ribosome     5</pre>
+##   ensembl_prot_id gene_name go_term    score location
+##   &lt;chr&gt;           &lt;chr&gt;     &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;   
+## 1 ENSP00000362300 AGO1      GO:0005844     5 Ribosome</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>filter()</code></h2></hgroup><article  class="build" id="filter-4">
+</article></slide><slide class=""><hgroup><h2><code>filter()</code></h2></hgroup><article  id="filter-4" class="build">
 
 <p>To avoid writing multiple <code>filter()</code> commands, multiple logical statements can be put inside a single <code>filter()</code> command, separated by commas</p>
 
@@ -3348,11 +3348,11 @@ data(subcell)</pre>
   head(1)</pre>
 
 <pre >## # A tibble: 1 x 5
-##   ensembl_prot_id gene_name go_term    location score
-##   &lt;chr&gt;           &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;    &lt;dbl&gt;
-## 1 ENSP00000053468 MRPS10    GO:0005840 Ribosome     5</pre>
+##   ensembl_prot_id gene_name go_term    score location
+##   &lt;chr&gt;           &lt;chr&gt;     &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;   
+## 1 ENSP00000362300 AGO1      GO:0005844     5 Ribosome</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>filter()</code> exercise</h2></hgroup><article  class="build" id="filter-exercise">
+</article></slide><slide class=""><hgroup><h2><code>filter()</code> exercise</h2></hgroup><article  id="filter-exercise" class="build">
 
 <p>Filter all proteins NOT associated with the ribosome, with a score no more than 4</p>
 
@@ -3364,7 +3364,7 @@ data(subcell)</pre>
   filter(location != &quot;Ribosome&quot;,
          score &lt;= 4)</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>arrange()</code></h2></hgroup><article  class="build" id="arrange">
+</article></slide><slide class=""><hgroup><h2><code>arrange()</code></h2></hgroup><article  id="arrange" class="build">
 
 <p>You can use the <code>arrange()</code> verb to sort rows</p>
 
@@ -3384,7 +3384,7 @@ data(subcell)</pre>
 ## 3 P01858     &lt;NA&gt;      &lt;NA&gt;          &quot;Phagocytos… Tuftsin)         TKPR    
 ## # … with 2 more variables: length &lt;dbl&gt;, mass &lt;dbl&gt;</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>arrange()</code></h2></hgroup><article  class="build" id="arrange-1">
+</article></slide><slide class=""><hgroup><h2><code>arrange()</code></h2></hgroup><article  id="arrange-1" class="build">
 
 <p>To reverse this order, use the <code>desc()</code> function within <code>arrange()</code></p>
 
@@ -3400,7 +3400,7 @@ data(subcell)</pre>
 ## 3 Q8NF91     SYNE1     C6orf98 KIAA… &quot;Nesprin-1 &quot; Enaptin) (KASH … MATSRGA…
 ## # … with 2 more variables: length &lt;dbl&gt;, mass &lt;dbl&gt;</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>arrange()</code> exercise</h2></hgroup><article  class="build" id="arrange-exercise">
+</article></slide><slide class=""><hgroup><h2><code>arrange()</code> exercise</h2></hgroup><article  id="arrange-exercise" class="build">
 
 <p>What happens when you apply <code>arrange()</code> to a categorical variable?</p>
 
@@ -3419,7 +3419,7 @@ data(subcell)</pre>
 ## 6 O14931     NCR3      1C7 LY117     &quot;Natural cy… Activating natu… MAWMLLL…
 ## # … with 2 more variables: length &lt;dbl&gt;, mass &lt;dbl&gt;</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>mutate()</code></h2></hgroup><article  class="build" id="mutate">
+</article></slide><slide class=""><hgroup><h2><code>mutate()</code></h2></hgroup><article  id="mutate" class="build">
 
 <p>The <code>mutate()</code> verb, unlike the ones covered so far, creates new variable(s) i.e. new column(s). For example</p>
 
@@ -3435,7 +3435,7 @@ data(subcell)</pre>
 
 <p>The code chunk above takes all the elements of the column <code>length</code>, evaluates the square root of each element, and populates a new column called <code>sqrt_length</code> with these results</p>
 
-</article></slide><slide class=""><hgroup><h2><code>mutate()</code></h2></hgroup><article  class="build" id="mutate-1">
+</article></slide><slide class=""><hgroup><h2><code>mutate()</code></h2></hgroup><article  id="mutate-1" class="build">
 
 <p>Multiple columns can be used as inputs. For example</p>
 
@@ -3454,14 +3454,14 @@ data(subcell)</pre>
 
 <p>The results are stored in a new column called <code>protein_length_mass</code></p>
 
-</article></slide><slide class=""><hgroup><h2><code>mutate()</code> exercise</h2></hgroup><article  class="build" id="mutate-exercise">
+</article></slide><slide class=""><hgroup><h2><code>mutate()</code> exercise</h2></hgroup><article  id="mutate-exercise" class="build">
 
 <p>Create a new column (give it any name you like) and fill it with protein lengths divided by 100</p>
 
 <pre class = 'prettyprint lang-r'>proteins %&gt;% 
   mutate(protein_length_100 = length/100)</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>summarise()</code></h2></hgroup><article  class="build" id="summarise">
+</article></slide><slide class=""><hgroup><h2><code>summarise()</code></h2></hgroup><article  id="summarise" class="build">
 
 <p><code>summarise()</code> produces a new dataframe that aggregates that values of a column based on a certain condition.</p>
 
@@ -3475,7 +3475,7 @@ data(subcell)</pre>
 ##            &lt;dbl&gt;        &lt;dbl&gt;
 ## 1           557.       62061.</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>summarise()</code></h2></hgroup><article  class="build" id="summarise-1">
+</article></slide><slide class=""><hgroup><h2><code>summarise()</code></h2></hgroup><article  id="summarise-1" class="build">
 
 <p>You can assign your own names by running the following</p>
 
@@ -3488,7 +3488,7 @@ data(subcell)</pre>
 ##         &lt;dbl&gt;     &lt;dbl&gt;
 ## 1        557.    62061.</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>summarise()</code> exercise</h2></hgroup><article  class="build" id="summarise-exercise">
+</article></slide><slide class=""><hgroup><h2><code>summarise()</code> exercise</h2></hgroup><article  id="summarise-exercise" class="build">
 
 <p>Make a new table that contains the mean, median and standard deviations of protein lengths</p>
 
@@ -3504,7 +3504,7 @@ data(subcell)</pre>
 ##          &lt;dbl&gt;          &lt;dbl&gt;      &lt;dbl&gt;
 ## 1         557.            414       596.</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>group_by()</code></h2></hgroup><article  class="build" id="group_by">
+</article></slide><slide class=""><hgroup><h2><code>group_by()</code></h2></hgroup><article  id="group_by" class="build">
 
 <p><code>group_by()</code> and <code>summarise()</code> can be used in combination to summarise by groups</p>
 
@@ -3514,22 +3514,26 @@ data(subcell)</pre>
   group_by(location) %&gt;% 
   summarise(mean(score)) </pre>
 
-<pre >## # A tibble: 3,046 x 2
-##    location                                                  `mean(score)`
-##    &lt;chr&gt;                                                             &lt;dbl&gt;
-##  1 [Ni-Fe] hydrogenase complex                                        1.27
-##  2 1-alkyl-2-acetylglycerophosphocholine esterase complex             1.19
-##  3 1,3-beta-D-glucan synthase complex                                 1.27
-##  4 3-isopropylmalate dehydratase complex                              1.93
-##  5 3-methyl-2-oxobutanoate dehydrogenase (lipoamide) complex          1.42
-##  6 3-methylcrotonyl-CoA carboxylase complex, mitochondrial            4.29
-##  7 3-phenylpropionate dioxygenase complex                             2.62
-##  8 3M complex                                                         3.52
-##  9 4-aminobutyrate transaminase complex                               1.07
-## 10 5-lipoxygenase complex                                             1.05
-## # … with 3,036 more rows</pre>
+<pre >## # A tibble: 15 x 2
+##    location      `mean(score)`
+##    &lt;chr&gt;                 &lt;dbl&gt;
+##  1 Centrosome             4.96
+##  2 Cytoplasm              4.52
+##  3 ER                     2.96
+##  4 Extracellular          3.55
+##  5 Golgi                  4.04
+##  6 Lysosome               1.65
+##  7 Membrane               4.47
+##  8 Mitochondria           3.12
+##  9 Nucleolus              2.75
+## 10 Nucleus                4.12
+## 11 Other                  2.02
+## 12 Peroxisome             1.52
+## 13 Ribosome               1.81
+## 14 Vacuole                1.69
+## 15 Vesicle                2.03</pre>
 
-</article></slide><slide class=""><hgroup><h2>Saving a new dataset</h2></hgroup><article  class="build" id="saving-a-new-dataset">
+</article></slide><slide class=""><hgroup><h2>Saving a new dataset</h2></hgroup><article  id="saving-a-new-dataset" class="build">
 
 <p>If you’d like to save the output of your wrangling, you will need to use the <code>&lt;-</code> or <code>-&gt;</code> operators</p>
 
@@ -3541,7 +3545,7 @@ data(subcell)</pre>
 
 <pre class = 'prettyprint lang-r'>write_csv(subcell_new, &quot;subcell_new.csv&quot;)</pre>
 
-</article></slide><slide class=""><hgroup><h2>For more help</h2></hgroup><article  class="build" id="for-more-help">
+</article></slide><slide class=""><hgroup><h2>For more help</h2></hgroup><article  id="for-more-help" class="build">
 
 <p>Run the following to access the Dplyr vignette</p>
 

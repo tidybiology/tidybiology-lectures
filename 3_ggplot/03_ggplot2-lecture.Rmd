@@ -11,16 +11,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r, include=FALSE}
 library(tidyverse)
-
-#install.packages("devtools")
-#devtools::install_github("hirscheylab/tidybiology")
-
+library(feather)
 library(tidybiology)
-data(package="tidybiology")
+
 ```
 
-```{r, include=FALSE}
-load("uniprot_region.rda") #this is a dataset that Akshay made for this class
+```{r}
+load("uniprot_region.rda")
 data(chromosome)
 ```
 
@@ -36,14 +33,14 @@ data(chromosome)
 
 Below is an example of the most basic form of the ggplot code
 ```{r, eval=FALSE}
-ggplot(data) + #this will generate a blank plot for your data. At this point, ggplot knows what to plot, but not how.
-  geom(mapping = aes(x, y)) #adding a geom tells ggplot how you would like to map your data
+ggplot(data)+ #this will generate a blank plot for your data. At this point, ggplot knows what to plot, but not how.
+  geom(mapping=aes(x, y)) #adding a geom tells ggplot how you would like to map your data
 ```
 
 Take a moment to look back at the code you ran previously. You can see that in that code we assigned a dataset and the information we needed to map it to a scatterplot.
 ```{r}
 ggplot(data = chromosome) +
- 	 geom_point(mapping = aes(x = length_mm, y = protein_codinggenes))
+ 	 geom_point(mapping=aes(x = length_mm, y = protein_codinggenes))
 
 ```
 
@@ -72,28 +69,28 @@ The following code generates a scatterplot of the uniprot_region dataset. Change
 ```{r}
 ggplot(uniprot_region) +
   geom_point(aes(x=Cell.Region,y=log(Protein.Length)))
+
 ```
 Sometimes you will run into errors indicating more information is needed for a plot or that you do not have the correct variable types. For more in depth information on the geoms, I find the ggplot2 reference page more helpful than the built in help pages
   * https://ggplot2.tidyverse.org/reference/index.html
   
-Question- without running it, predict what the following code will do:
-
+Question- without running it, determine what the following code will do
 ```{r}#
-ggplot(uniprot_region) +
-  geom_jitter(aes(x=Cell.Region, y=log(Protein.Length))) +
+ggplot(uniprot_region)+
+  geom_jitter(aes(x=Cell.Region, y=log(Protein.Length)))+
   geom_boxplot(aes(x=Cell.Region, y=log(Protein.Length)))
 
 ```
 
 #Aesthetics
-Everything up to this point gets you a basic graph- but what about colors, shapes, and overal style? 
+Everything up to this point gets you a basic graph- but what about colors, shapes and overal style? 
 
 There are 5 basic aesthetics you can can change
-1. color - changes the outline color of your datapoints
-2. size - changes the size of your data point
-3. shape - sets the shape of a point to one of the pre-defined shape classes
-4. alpha - changes the transparency of each point
-5. fill- changes the fill color of your graph
+1. Color- changes the outline color of your datapoints
+2. size
+3. Shape
+4. alpha- changes the transparency of each point
+5. fill- changes the fill color of your points
 
 ##Exercise 3
 Add some different aes values to this graph.
@@ -115,22 +112,29 @@ ggplot(uniprot_region) +
 
 ```
 
-#Global vs Local  
+####A note on color: Color can be a very powerful tool in dataviz, however, it can also be where many plots go wrong. Some tips:
+  1. less is often more. 
+  2. remember colorblind color pairs (red/green being the most common)
+  3. Consider installing the viridis package for colorblind friendly continious color scalse (like you may use for a heatmap)
+  4. When using few colors, ensure they are distinct (ex: red vs blue instead of red vs orange)
+
+#Global vs Local
+
 In ggplot2, we have the options to set mappings globally or locally. Setting a mapping globally means to set those values in the original ggplot function.
 
-Example:  
+Example:
   Earlier in class you made this graph:
 ```{r}
-ggplot(uniprot_region) +
-  geom_jitter(aes(x=Cell.Region, y=log(Protein.Length))) +
+ggplot(uniprot_region)+
+  geom_jitter(aes(x=Cell.Region, y=log(Protein.Length)))+
   geom_boxplot(aes(x=Cell.Region, y=log(Protein.Length)))
   
 ```
   
 However, if we map our x and y values in the ggplot function we find that we generate the same graph
 ```{r}
-ggplot(uniprot_region, aes(x=Cell.Region, y=log(Protein.Length))) +
-  geom_jitter() +
+ggplot(uniprot_region, aes(x=Cell.Region, y=log(Protein.Length)))+
+  geom_jitter()+
   geom_boxplot()
 
 ```
@@ -140,8 +144,8 @@ This means all the functions afterwards will inherit that mapping. So in our Exa
 You can also set aes values **locally** within the geom function. Doing so will only change the values in that geom
 
 ```{r}
-ggplot(uniprot_region, aes(x=Cell.Region, y=log(Protein.Length))) +
-  geom_jitter() +
+ggplot(uniprot_region, aes(x=Cell.Region, y=log(Protein.Length)))+
+  geom_jitter()+
   geom_boxplot(aes(color=Cell.Region))
 
 ```
@@ -154,9 +158,9 @@ large_prot<- filter(uniprot_region, Protein.Length > 14000)
 
 Now, let's label only the proteins identified in our large_prot data by setting data locally in a new geom
 ```{r}
-ggplot(uniprot_region, aes(x=Cell.Region, y=log(Protein.Length))) +
-  geom_jitter() +
-  geom_boxplot(aes(color=Cell.Region)) +
+ggplot(uniprot_region, aes(x=Cell.Region, y=log(Protein.Length)))+
+  geom_jitter()+
+  geom_boxplot(aes(color=Cell.Region))+
   geom_label(data=large_prot, aes(label= Gene.Name))
 ```
 You notice we have to indicate the new dataset, but because it has the same x and y values, we did not need to set those mappings.
@@ -167,29 +171,29 @@ We can change these settings in our graph using the labs() function.
 
 Let's start by simply changing the x-axis label
 ```{r}
-ggplot(uniprot_region, aes(x=Cell.Region, y=log(Protein.Length))) +
-  geom_jitter() +
-  geom_boxplot(aes(color=Cell.Region)) +
-  geom_label(data=large_prot, aes(label= Gene.Name)) +
+ggplot(uniprot_region, aes(x=Cell.Region, y=log(Protein.Length)))+
+  geom_jitter()+
+  geom_boxplot(aes(color=Cell.Region))+
+  geom_label(data=large_prot, aes(label= Gene.Name))+
   labs(x="Cellular Compartment")
 ```
 
 Now, seeing as we have a pretty explanatory legend, we could try to get rid of it. This becomes especially useful when ggplot gives you legends that don't make sense to show
 ```{r}
-ggplot(uniprot_region, aes(x=Cell.Region, y=log(Protein.Length))) +
-  geom_jitter() +
-  geom_boxplot(aes(color=Cell.Region)) +
-  geom_label(data=large_prot, aes(label= Gene.Name)) +
-  labs(x="Cellular Compartment") +
+ggplot(uniprot_region, aes(x=Cell.Region, y=log(Protein.Length)))+
+  geom_jitter()+
+  geom_boxplot(aes(color=Cell.Region))+
+  geom_label(data=large_prot, aes(label= Gene.Name))+
+  labs(x="Cellular Compartment")+
   guides(color= "none")
 ```
 
 ##Exercise 5
 Add appropriate x and y axis titles to the graph, as well as a title
 ```{r}
-ggplot(uniprot_region, aes(x=Cell.Region, y=log(Protein.Length))) +
-  geom_jitter() +
-  geom_boxplot(aes(color=Cell.Region)) +
+ggplot(uniprot_region, aes(x=Cell.Region, y=log(Protein.Length)))+
+  geom_jitter()+
+  geom_boxplot(aes(color=Cell.Region))+
 	geom_label(data=large_prot, aes(label= Gene.Name))
 
 ```
@@ -202,8 +206,8 @@ Faceting allows you to create multiple graphs side by side in one panel. Especia
 
 For example
 ```{r}
-ggplot(uniprot_region) +
-  geom_point(aes(x=log(Gene.Length), y=log(Protein.Length))) +
+ggplot(uniprot_region)+
+  geom_point(aes(x=log(Gene.Length), y=log(Protein.Length)))+
   facet_grid(rows = vars(Cell.Region))
 ```
 ###Different types of facets
@@ -223,18 +227,18 @@ You can change the overal color scheme of the background of your plot using them
 
 compare the following graphs
 ```{r}
-ggplot(uniprot_region) +
+ggplot(uniprot_region)+
   geom_point(aes(x=log(Gene.Length), y=log(Protein.Length)))
 
-ggplot(uniprot_region) +
-  geom_point(aes(x=log(Gene.Length), y=log(Protein.Length))) +
+ggplot(uniprot_region)+
+  geom_point(aes(x=log(Gene.Length), y=log(Protein.Length)))+
   theme_bw()
 ```
 
 One more theme
 ```{r}
-ggplot(uniprot_region) +
-  geom_point(aes(x=log(Gene.Length), y=log(Protein.Length))) +
+ggplot(uniprot_region)+
+  geom_point(aes(x=log(Gene.Length), y=log(Protein.Length)))+
   theme_dark()
 ```
 You can find more ggplot themes on the ggplot reference page.
@@ -245,9 +249,9 @@ If you make a plot there are a few ways to save it, though the simplist is to us
 
 For example, you made this plot earlier:
 ```{r}
-ggplot(uniprot_region, aes(x=Cell.Region, y=log(Protein.Length))) +
-  geom_jitter() +
-  geom_boxplot(aes(color=Cell.Region)) +
+ggplot(uniprot_region, aes(x=Cell.Region, y=log(Protein.Length)))+
+  geom_jitter()+
+  geom_boxplot(aes(color=Cell.Region))+
   geom_label(data=large_prot, aes(label= Gene.Name))
 ```
 
@@ -258,7 +262,7 @@ ggsave("ggsaveexample.png")
 You can change the type of file you save or even the size in inches. 
 example:
 ```{r}
-ggsave("ggsaveexample.pdf", width = 6, height = 6, units = "in")
+ggsave("ggsaveexample.pdf", width = 6, height = 6)
 
 ```
 

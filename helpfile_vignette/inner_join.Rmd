@@ -1,18 +1,20 @@
 ---
-title: "inner_join help file"
+title: "How to combine two datasets"
 output:
   html_document: default
   pdf_document: default
   word_document: default
 ---
-
+Combining two data frames is often required to integrate data from differents sources. Joining these data require a common variable between the two data sets to match the observations. The `dplyr` package of the tidyverse as a series of `join` functions that integrate two data frames in unique, and specific ways.  
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 #load appropriate packages
 library(tidyverse)
 ```
-### **What would I google to land on this page?**
-How do I combine all the columns of two datasets that have at least one column in common? 
+### What would I google to land on this page?
+How do I combine all the columns of two datasets that have at least one column in common?  
+How do I merge two datasets?  
+How do I combine and drop variables between two dataframes?  
 
 ### Packages
 ```{r, eval=FALSE}
@@ -40,7 +42,7 @@ inner_join(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"),
   ...)
 ```
 
-## **Required input**
+### **Required input**
 What arguments are required for this function to run:  
 
 * **data**: two dataframes with at least one common column 
@@ -88,5 +90,5 @@ In this case, note that since there was a "Chromosome" column in both dataframes
 inner_join(x, y, by = c("Gene" = "gene"), suffix = c(".protein", ".gene"))
 ```
 
-### **To learn more**
+### To learn more
 https://dplyr.tidyverse.org/reference/join.html

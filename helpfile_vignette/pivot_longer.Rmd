@@ -113,7 +113,7 @@ knitr::kable(Protein_ModEx2)%>%
    column_spec(3, bold = T, color = "white", background = "blue")
 ```
 
-### **To learn more**
+### To learn more
 Tidyr reference page: https://tidyr.tidyverse.org/reference/pivot_longer.html  
 pivot vignette: http://www.storybench.org/pivoting-data-from-columns-to-rows-and-back-in-the-tidyverse/ 
 

@@ -1,0 +1,867 @@
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[ignorenonframetext,]{beamer}
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph:
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+\centering
+\begin{beamercolorbox}[sep=16pt,center]{part title}
+  \usebeamerfont{part title}\insertpart\par
+\end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+\centering
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+  \usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+\centering
+\begin{beamercolorbox}[sep=8pt,center]{part title}
+  \usebeamerfont{subsection title}\insertsubsection\par
+\end{beamercolorbox}
+}
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
+\else % if luatex or xelatex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\usepackage{hyperref}
+\hypersetup{
+            pdftitle={Introduction to dplyr},
+            pdfauthor={Akshay Bareja},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\newif\ifbibliography
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+
+\title{Introduction to dplyr}
+\author{Akshay Bareja}
+\date{10/11/2019}
+
+\begin{document}
+\frame{\titlepage}
+
+\begin{frame}[fragile]{Loading the \texttt{proteins} and
+\texttt{subcell} datasets into RStudio}
+\protect\hypertarget{loading-the-proteins-and-subcell-datasets-into-rstudio}{}
+
+The datasets can be found in the tidybiology package
+
+To install and load the package, run the following
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{devtools}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"hirscheylab/tidybiology"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(tidybiology)}
+\end{Highlighting}
+\end{Shaded}
+
+To load the \texttt{proteins} and \texttt{subcell} datasets, run the
+following
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{data}\NormalTok{(proteins)}
+\KeywordTok{data}\NormalTok{(subcell)}
+\end{Highlighting}
+\end{Shaded}
+
+\end{frame}
+
+\begin{frame}[fragile]{Inspecting the \texttt{proteins} dataset}
+\protect\hypertarget{inspecting-the-proteins-dataset}{}
+
+Use the \texttt{dim()} function to see how many rows (observations) and
+columns (variables) there are
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{dim}\NormalTok{(proteins)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 20430     8
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{Inspecting the \texttt{proteins} dataset}
+\protect\hypertarget{inspecting-the-proteins-dataset-1}{}
+
+Use the \texttt{glimpse()} function to see what kinds of variables the
+dataset contains
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{glimpse}\NormalTok{(proteins)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Observations: 20,430
+## Variables: 8
+## $ uniprot_id       <chr> "P04217", "Q9NQ94", "P01023", "A8K2U0", "U3KP...
+## $ gene_name        <chr> "A1BG", "A1CF", "A2M", "A2ML1", "A3GALT2", "A...
+## $ gene_name_alt    <chr> NA, "ACF ASP", "CPAMD5 FWP007", "CPAMD9", "A3...
+## $ protein_name     <chr> "Alpha-1B-glycoprotein ", "APOBEC1 complement...
+## $ protein_name_alt <chr> "Alpha-1-B glycoprotein)", "APOBEC1-stimulati...
+## $ sequence         <chr> "MSMLVVFLLLWGVTWGPVTEAAIFYETQPSLWAESESLLKPLAN...
+## $ length           <dbl> 495, 594, 1474, 1454, 340, 353, 340, 546, 672...
+## $ mass             <dbl> 54254, 65202, 163291, 161107, 38754, 40499, 3...
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{Basic Data Types in R}
+\protect\hypertarget{basic-data-types-in-r}{}
+
+R has 6 basic data ypes -
+
+\textbf{character} - \texttt{"a"}, \texttt{"tidyverse"}
+
+\textbf{numeric} - \texttt{2}, \texttt{11.5}
+
+\textbf{integer} - \texttt{2L} (the \texttt{L} tells R to store this as
+an integer)
+
+\textbf{logical} - \texttt{TRUE}, \texttt{FALSE}
+
+\textbf{complex} - \texttt{1+4i}
+
+(\textbf{raw})
+
+You will also come across the \textbf{double} datatype. It is the same
+as \textbf{numeric}
+
+\textbf{factor}. A \textbf{factor} is a collection of \emph{ordered}
+character variables
+
+\end{frame}
+
+\begin{frame}[fragile]{Basic Data Types in R}
+\protect\hypertarget{basic-data-types-in-r-1}{}
+
+In addition to the \texttt{glimpse()} function, you can use the
+\texttt{class()} function to determine the data type of a specific
+column
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{class}\NormalTok{(proteins}\OperatorTok{$}\NormalTok{length)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "numeric"
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{(Re)Introducing \texttt{\%\textgreater{}\%}}
+\protect\hypertarget{reintroducing}{}
+
+The \texttt{\%\textgreater{}\%} operator is a way of ``chaining''
+together strings of commands that make reading your code easy. The
+following code chunk illustrates how \texttt{\%\textgreater{}\%} works
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{proteins }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(uniprot_id, length) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(length }\OperatorTok{>}\StringTok{ }\DecValTok{500}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{head}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 2
+##   uniprot_id length
+##   <chr>       <dbl>
+## 1 Q9NQ94        594
+\end{verbatim}
+
+The above code chunk does the following - it takes you dataset,
+\texttt{proteins}, and ``pipes'' it into \texttt{select()}
+
+\end{frame}
+
+\begin{frame}[fragile]{(Re)Introducing \texttt{\%\textgreater{}\%}}
+\protect\hypertarget{reintroducing-1}{}
+
+The second line selects just the columns named \texttt{uniprot\_id} and
+\texttt{length} and ``pipes'' that into \texttt{filter()}. The final
+line selects proteins that are longer than 500 amino acids
+
+When you see \texttt{\%\textgreater{}\%}, think ``and then''
+
+The alternative to using \texttt{\%\textgreater{}\%} is running the
+following code
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{filter}\NormalTok{(}\KeywordTok{select}\NormalTok{(proteins, uniprot_id, length), length }\OperatorTok{>}\StringTok{ }\DecValTok{500}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Although this is only one line as opposed to three, it's both more
+difficult to write and more difficult to read
+
+\end{frame}
+
+\begin{frame}[fragile]{Introducing the main dplyr verbs}
+\protect\hypertarget{introducing-the-main-dplyr-verbs}{}
+
+dplyr is a package that contains a suite of functions that allow you to
+easily manipulate a dataset
+
+Some of the things you can do are -
+
+\begin{itemize}[<+->]
+\item
+  select rows and columns that match specific criteria
+\item
+  create new variables (columns)
+\item
+  obtain summary statistics on individual groups within your datsets
+\end{itemize}
+
+The main verbs we will cover are \texttt{select()}, \texttt{filter()},
+\texttt{arrange()}, \texttt{mutate()}, and \texttt{summarise()}. These
+all combine naturally with \texttt{group\_by()} which allows you to
+perform any operation ``by group''
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{select()}}
+\protect\hypertarget{select}{}
+
+The \texttt{select()} verb allows you to extract specific columns from
+your dataset
+
+The most basic \texttt{select()} is one where you comma separate a list
+of columns you want included
+
+For example, if you only want to select the \texttt{uniprot\_id} and
+\texttt{length} columns, run the following code chunk
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{proteins }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(uniprot_id, length) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{head}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 2
+##   uniprot_id length
+##   <chr>       <dbl>
+## 1 P04217        495
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{select()}}
+\protect\hypertarget{select-1}{}
+
+If you want to select all columns \emph{except} \texttt{uniprot\_id},
+run the following
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{proteins }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{uniprot_id) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{head}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 7
+##   gene_name gene_name_alt protein_name protein_name_alt sequence length
+##   <chr>     <chr>         <chr>        <chr>            <chr>     <dbl>
+## 1 A1BG      <NA>          "Alpha-1B-g~ Alpha-1-B glyco~ MSMLVVF~    495
+## # ... with 1 more variable: mass <dbl>
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{select()}}
+\protect\hypertarget{select-2}{}
+
+Finally, you can provide a range of columns to return two columns and
+everything in between. For example
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{proteins }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(uniprot_id}\OperatorTok{:}\NormalTok{protein_name) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{head}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 4
+##   uniprot_id gene_name gene_name_alt protein_name            
+##   <chr>      <chr>     <chr>         <chr>                   
+## 1 P04217     A1BG      <NA>          "Alpha-1B-glycoprotein "
+\end{verbatim}
+
+This code selects the following columns - \texttt{uniprot\_id},
+\texttt{gene\_name}, \texttt{gene\_name\_alt}, and
+\texttt{protein\_name}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{select()} exercise}
+\protect\hypertarget{select-exercise}{}
+
+Select the following columns - \texttt{uniprot\_id}, \texttt{sequence},
+\texttt{length}, and \texttt{mass}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{proteins }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(uniprot_id, sequence}\OperatorTok{:}\NormalTok{mass)}
+\end{Highlighting}
+\end{Shaded}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{filter()}}
+\protect\hypertarget{filter}{}
+
+The \texttt{filter()} verb allows you to choose rows based on certain
+condition(s) and discard everything else
+
+All filters are performed on some logical statement
+
+If a row meets the condition of this statement (i.e.~is true) then it
+gets chosen (or ``filtered''). All other rows are discarded
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{filter()}}
+\protect\hypertarget{filter-1}{}
+
+Filtering can be performed on categorical data
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{subcell }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(location }\OperatorTok{==}\StringTok{ "Ribosome"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{head}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 5
+##   ensembl_prot_id gene_name go_term    score location
+##   <chr>           <chr>     <chr>      <dbl> <chr>   
+## 1 18S_rRNA        18S_rRNA  GO:0005840  3.39 Ribosome
+\end{verbatim}
+
+The code chunk above only selects ribosome-associated proteins
+
+Note that \texttt{filter()} only applies to rows, and has no effect on
+columns
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{filter()}}
+\protect\hypertarget{filter-2}{}
+
+Filtering can also be performed on numerical data
+
+For example, to select proteins with a score greater than 4, run the
+following code
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{subcell }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(score }\OperatorTok{>}\StringTok{ }\DecValTok{4}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{head}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 5
+##   ensembl_prot_id gene_name go_term    score location     
+##   <chr>           <chr>     <chr>      <dbl> <chr>        
+## 1 ENSP00000263100 A1BG      GO:0005576     5 Extracellular
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{filter()}}
+\protect\hypertarget{filter-3}{}
+
+To filter on multiple conditions, you can write a sequence of
+\texttt{filter()} commands
+
+For example, to select ribosome-associated proteins \emph{and} proteins
+with a score greater than 4, run the following
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{subcell }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(location }\OperatorTok{==}\StringTok{ "Ribosome"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(score }\OperatorTok{>}\StringTok{ }\DecValTok{4}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{head}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 5
+##   ensembl_prot_id gene_name go_term    score location
+##   <chr>           <chr>     <chr>      <dbl> <chr>   
+## 1 ENSP00000362300 AGO1      GO:0005844     5 Ribosome
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{filter()}}
+\protect\hypertarget{filter-4}{}
+
+To avoid writing multiple \texttt{filter()} commands, multiple logical
+statements can be put inside a single \texttt{filter()} command,
+separated by commas
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{subcell }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(location }\OperatorTok{==}\StringTok{ "Ribosome"}\NormalTok{,}
+\NormalTok{         score }\OperatorTok{>}\StringTok{ }\DecValTok{4}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{head}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 5
+##   ensembl_prot_id gene_name go_term    score location
+##   <chr>           <chr>     <chr>      <dbl> <chr>   
+## 1 ENSP00000362300 AGO1      GO:0005844     5 Ribosome
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{filter()} exercise}
+\protect\hypertarget{filter-exercise}{}
+
+Filter all proteins NOT associated with the ribosome, with a score no
+more than 4
+
+\texttt{!=} = ``not equal to''
+
+\texttt{\textless{}=} = ``less than or equal to''
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{subcell }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(location }\OperatorTok{!=}\StringTok{ "Ribosome"}\NormalTok{,}
+\NormalTok{         score }\OperatorTok{<=}\StringTok{ }\DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{arrange()}}
+\protect\hypertarget{arrange}{}
+
+You can use the \texttt{arrange()} verb to sort rows
+
+The input for arrange is one or many columns, and \texttt{arrange()}
+sorts the rows in ascending order i.e.~from smallest to largest
+
+For example, to sort rows from smallest to largest protein, run the
+following
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{proteins }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(length) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{head}\NormalTok{(}\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 8
+##   uniprot_id gene_name gene_name_alt protein_name protein_name_alt sequence
+##   <chr>      <chr>     <chr>         <chr>        <chr>            <chr>   
+## 1 P0DPR3     TRDD1     <NA>          T cell rece~ <NA>             EI      
+## 2 P0DPI4     TRBD1     <NA>          T cell rece~ <NA>             GTGG    
+## 3 P01858     <NA>      <NA>          "Phagocytos~ Tuftsin)         TKPR    
+## # ... with 2 more variables: length <dbl>, mass <dbl>
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{arrange()}}
+\protect\hypertarget{arrange-1}{}
+
+To reverse this order, use the \texttt{desc()} function within
+\texttt{arrange()}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{proteins }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(length)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{head}\NormalTok{(}\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 8
+##   uniprot_id gene_name gene_name_alt protein_name protein_name_alt sequence
+##   <chr>      <chr>     <chr>         <chr>        <chr>            <chr>   
+## 1 Q8WZ42     TTN       <NA>          "Titin "     EC 2.7.11.1) (C~ MTTQAPT~
+## 2 Q8WXI7     MUC16     CA125         "Mucin-16 "  MUC-16) (Ovaria~ MLKPSGL~
+## 3 Q8NF91     SYNE1     C6orf98 KIAA~ "Nesprin-1 " Enaptin) (KASH ~ MATSRGA~
+## # ... with 2 more variables: length <dbl>, mass <dbl>
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{arrange()} exercise}
+\protect\hypertarget{arrange-exercise}{}
+
+What happens when you apply \texttt{arrange()} to a categorical
+variable?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{proteins }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(gene_name_alt) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{head}\NormalTok{(}\DecValTok{6}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 8
+##   uniprot_id gene_name gene_name_alt protein_name protein_name_alt sequence
+##   <chr>      <chr>     <chr>         <chr>        <chr>            <chr>   
+## 1 O14569     CYB561D2  101F6 LUCA12~ "Cytochrome~ EC 7.2.1.3) (Pu~ MALSAET~
+## 2 P18054     ALOX12    12LO LOG12    "Arachidona~ 12S-LOX) (12S-l~ MGRYRIR~
+## 3 O43715     TRIAP1    15E1.1 HSPC1~ "TP53-regul~ Protein 15E1.1)~ MNSVGEA~
+## 4 O43716     GATC      15E1.2        Glutamyl-tR~ Gln) amidotrans~ MWSRLVW~
+## 5 Q14596     NBR1      1A13B KIAA00~ "Next to BR~ Cell migration-~ MEPQVTL~
+## 6 O14931     NCR3      1C7 LY117     "Natural cy~ Activating natu~ MAWMLLL~
+## # ... with 2 more variables: length <dbl>, mass <dbl>
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{mutate()}}
+\protect\hypertarget{mutate}{}
+
+The \texttt{mutate()} verb, unlike the ones covered so far, creates new
+variable(s) i.e.~new column(s). For example
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{proteins }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{sqrt_length =} \KeywordTok{sqrt}\NormalTok{(length)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{head}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 9
+##   uniprot_id gene_name gene_name_alt protein_name protein_name_alt sequence
+##   <chr>      <chr>     <chr>         <chr>        <chr>            <chr>   
+## 1 P04217     A1BG      <NA>          "Alpha-1B-g~ Alpha-1-B glyco~ MSMLVVF~
+## # ... with 3 more variables: length <dbl>, mass <dbl>, sqrt_length <dbl>
+\end{verbatim}
+
+The code chunk above takes all the elements of the column
+\texttt{length}, evaluates the square root of each element, and
+populates a new column called \texttt{sqrt\_length} with these results
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{mutate()}}
+\protect\hypertarget{mutate-1}{}
+
+Multiple columns can be used as inputs. For example
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{proteins }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{protein_length_mass =}\NormalTok{ length}\OperatorTok{/}\NormalTok{mass) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{head}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 9
+##   uniprot_id gene_name gene_name_alt protein_name protein_name_alt sequence
+##   <chr>      <chr>     <chr>         <chr>        <chr>            <chr>   
+## 1 P04217     A1BG      <NA>          "Alpha-1B-g~ Alpha-1-B glyco~ MSMLVVF~
+## # ... with 3 more variables: length <dbl>, mass <dbl>,
+## #   protein_length_mass <dbl>
+\end{verbatim}
+
+This code takes the length of each protein and divides it by its mass
+
+The results are stored in a new column called
+\texttt{protein\_length\_mass}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{mutate()} exercise}
+\protect\hypertarget{mutate-exercise}{}
+
+Create a new column (give it any name you like) and fill it with protein
+lengths divided by 100
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{proteins }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{protein_length_100 =}\NormalTok{ length}\OperatorTok{/}\DecValTok{100}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{summarise()}}
+\protect\hypertarget{summarise}{}
+
+\texttt{summarise()} produces a new dataframe that aggregates that
+values of a column based on a certain condition.
+
+For example, to calculate the mean protein length and mass, run the
+following
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{proteins }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\KeywordTok{mean}\NormalTok{(length), }\KeywordTok{mean}\NormalTok{(mass))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 2
+##   `mean(length)` `mean(mass)`
+##            <dbl>        <dbl>
+## 1           557.       62061.
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{summarise()}}
+\protect\hypertarget{summarise-1}{}
+
+You can assign your own names by running the following
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{proteins }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{mean_length =} \KeywordTok{mean}\NormalTok{(length), }
+            \DataTypeTok{mean_mass =} \KeywordTok{mean}\NormalTok{(mass))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 2
+##   mean_length mean_mass
+##         <dbl>     <dbl>
+## 1        557.    62061.
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{summarise()} exercise}
+\protect\hypertarget{summarise-exercise}{}
+
+Make a new table that contains the mean, median and standard deviations
+of protein lengths
+
+Use the \texttt{median()} and \texttt{sd()} functions to calculate
+median and standard deviation
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{proteins }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{protein_mean =} \KeywordTok{mean}\NormalTok{(length), }
+            \DataTypeTok{protein_median =} \KeywordTok{median}\NormalTok{(length),}
+            \DataTypeTok{protein_sd =} \KeywordTok{sd}\NormalTok{(length))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 3
+##   protein_mean protein_median protein_sd
+##          <dbl>          <dbl>      <dbl>
+## 1         557.            414       596.
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{group\_by()}}
+\protect\hypertarget{group_by}{}
+
+\texttt{group\_by()} and \texttt{summarise()} can be used in combination
+to summarise by groups
+
+For example, if you'd like to know the mean location score of proteins
+in each region, run the following
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{subcell }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(location) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\KeywordTok{mean}\NormalTok{(score)) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 15 x 2
+##    location      `mean(score)`
+##    <chr>                 <dbl>
+##  1 Centrosome             4.96
+##  2 Cytoplasm              4.52
+##  3 ER                     2.96
+##  4 Extracellular          3.55
+##  5 Golgi                  4.04
+##  6 Lysosome               1.65
+##  7 Membrane               4.47
+##  8 Mitochondria           3.12
+##  9 Nucleolus              2.75
+## 10 Nucleus                4.12
+## 11 Other                  2.02
+## 12 Peroxisome             1.52
+## 13 Ribosome               1.81
+## 14 Vacuole                1.69
+## 15 Vesicle                2.03
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{Saving a new dataset}
+\protect\hypertarget{saving-a-new-dataset}{}
+
+If you'd like to save the output of your wrangling, you will need to use
+the \texttt{\textless{}-} or \texttt{-\textgreater{}} operators
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{subcell_new <-}\StringTok{ }\NormalTok{subcell }\OperatorTok{%>%}\StringTok{ }
+\StringTok{                 }\KeywordTok{group_by}\NormalTok{(location) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{                 }\KeywordTok{summarise}\NormalTok{(}\KeywordTok{mean}\NormalTok{(score))  }
+\end{Highlighting}
+\end{Shaded}
+
+To save \texttt{subcell\_new} as a new file (e.g.~csv)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{write_csv}\NormalTok{(subcell_new, }\StringTok{"subcell_new.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\end{frame}
+
+\begin{frame}[fragile]{For more help}
+\protect\hypertarget{for-more-help}{}
+
+Run the following to access the Dplyr vignette
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{browseVignettes}\NormalTok{(}\StringTok{"dplyr"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\end{frame}
+
+\end{document}
