@@ -8,79 +8,50 @@ params:
 
 ```{r setup, include=FALSE}
 library(tidyverse)
-library(janitor)
-library(here)
-library(viridis)
-library(ggridges)
+library(tidybiology)
 
 #clear environment
 #rm(list=ls()) 
 
 #Set theme
 theme_set(theme_light())
+```
 
-#import
-raw <- read_tsv(here::here("5_markdown", "uniprot-filtered-reviewed%3Ayes+AND+organism%3A%22Homo+sapiens+%28Human%29+%5B96--.tab"), col_names = TRUE) %>% 
-  clean_names() %>% 
-  select(-status, -entry_name) %>% 
-  separate(gene_names, into = c("gene", "alt_gene_name"), sep = " ") %>% 
-  arrange(gene)
-
-#clean
-subcell <- raw %>%
-  filter(str_detect(subcellular_location_cc, "SUBCELLULAR")) %>% 
-  mutate(subcellular_location_cc = str_remove_all(subcellular_location_cc, "SUBCELLULAR LOCATION\\: ")) %>%
-  separate(subcellular_location_cc, into = c("subcellular_location_cc"), sep = "Note") %>% 
-  separate(subcellular_location_cc, into = c("subcellular_location_cc"), sep = "\\;") %>% 
-  separate(subcellular_location_cc, into = c("subcellular_location_cc"), sep = "\\{") %>% 
-  separate(subcellular_location_cc, into = c("subcellular_location_cc"), sep = "\\,") %>% 
-  separate(subcellular_location_cc, into = c("subcellular_location_cc"), sep = "\\.") %>% 
-  separate(subcellular_location_cc, into = c("temp", "subcellular_location_cc"), sep = "\\:", fill = "left") %>% 
-  select(-temp)
-
-#because of cleaning, some locations were listed as gene names; easy way to omit is if they are a single instance
-omit <- subcell %>% 
-  count(subcellular_location_cc, sort = TRUE) %>% 
-  filter(n == 1) %>% 
-  pull(subcellular_location_cc)
-
-'%ni%' <- Negate('%in%') #negate 'in' operator
-
-subcell <- subcell %>% 
-  filter(subcellular_location_cc %ni% omit) %>% #single instances
-  filter(str_length(subcellular_location_cc) > 0) #length is 0 for a few instance; omit
-
-subcell$subcellular_location_cc <- str_trim(subcell$subcellular_location_cc, side = "both") #make it so that white space does not make separate categories
-
+```{r include=FALSE}
 #####STUDENTS START HERE#####
 
-#Which subcellular locations have most annotated proteins?
+#Q: Which subcellular locations have most annotated proteins?
+#A:
 subcell %>% 
-  count(subcellular_location_cc, sort = TRUE)
+  count(location, sort = TRUE)
 
 #Store an object
 top <- subcell %>% 
-  count(subcellular_location_cc, sort = TRUE) %>% 
+  count(location, sort = TRUE) %>% 
   top_n(1)
 
+#join with protein dataset to combine regions and lengths
+full <- subcell %>% 
+  left_join(proteins)
+
 #calculate average lengths of all proteins
-avg_length <- subcell %>% 
-  group_by(subcellular_location_cc) %>% 
-  summarize(mean_length = mean(length)) %>% 
+avg_length <- full %>% 
+  group_by(location) %>% 
+  summarize(mean_length = mean(length, na.rm = TRUE)) %>% #need to remove NAs to make fun(mean) work
   arrange(desc(mean_length))
 
 #Store favorite gene
-fav <- subcell %>% 
-  filter(gene == params$gene)
+fav <- full %>% 
+  filter(gene_name == params$gene)
 
 #store an object to call longer
 longer <- if_else(
-  fav$length > avg_length %>% filter(subcellular_location_cc == fav$subcellular_location_cc) %>% pull(mean_length), "longer", "shorter"
+  fav$length > avg_length %>% filter(location == fav$location) %>% pull(mean_length), "longer", "shorter"
 )
 ```
+
   
-  
-My favorite gene is `r fav$gene`, which encodes a protein that is primarily located in the `r fav$subcellular_location_cc` is `r fav$length` amino acids long. The average length of proteins in the `r fav$subcellular_location_cc` is `r round(avg_length %>% filter(subcellular_location_cc == fav$subcellular_location_cc) %>% pull(mean_length),0)` amino acids, which makes `r fav$gene` `r longer` than average.
+My favorite gene is `r fav$gene_name`, which encodes a protein that is primarily located in the `r fav$location` and is `r fav$length` amino acids long. The average length of proteins in the `r fav$location` is `r round(avg_length %>% filter(location == fav$location) %>% pull(mean_length),0)` amino acids, which makes `r fav$gene_name` `r longer` than average.
   
 ```{r provenance, include=FALSE}
 #Session information for provenance and reproducibility

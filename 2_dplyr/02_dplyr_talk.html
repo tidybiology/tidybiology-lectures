@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Dplyr presentation</title>
+  <title>Introduction to dplyr</title>
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
@@ -20,7 +20,7 @@
     var SLIDE_CONFIG = {
       // Slide settings
       settings: {
-                title: 'Dplyr presentation',
+                title: 'Introduction to dplyr',
                         useBuilds: true,
         usePrettify: true,
         enableSlideAreas: true,
@@ -3120,91 +3120,46 @@ slide:not(.current) .plotly.html-widget{
           </hgroup>
   </slide>
 
-<slide class=""><hgroup><h2>Loading the <code>uniprot_region</code> dataset into RStudio</h2></hgroup><article  id="loading-the-uniprot_region-dataset-into-rstudio" class="build">
+<slide class=""><hgroup><h2>Loading the <code>proteins</code> and <code>subcell</code> datasets into RStudio</h2></hgroup><article  class="build" id="loading-the-proteins-and-subcell-datasets-into-rstudio">
 
-<p>The uniprot dataset can be found in the Tidybio package</p>
+<p>The datasets can be found in the tidybiology package</p>
 
 <p>To install and load the package, run the following</p>
 
-<pre class = 'prettyprint lang-r'>devtools::install_github(&quot;BAREJAA/Tidybio_pkg&quot;, build_vignettes = TRUE, 
-                         force = TRUE)</pre>
+<pre class = 'prettyprint lang-r'>devtools::install_github(&quot;hirscheylab/tidybiology&quot;)
+library(tidybiology)</pre>
 
-<pre >##   
-   checking for file ‘/private/var/folders/gv/f42fh8qn1d31bgpkf8xw5_lm0000gn/T/Rtmp2mmlN3/remotes8df8287c21da/BAREJAA-Tidybio_pkg-b3bb6d2/DESCRIPTION’ ...
-  
-✔  checking for file ‘/private/var/folders/gv/f42fh8qn1d31bgpkf8xw5_lm0000gn/T/Rtmp2mmlN3/remotes8df8287c21da/BAREJAA-Tidybio_pkg-b3bb6d2/DESCRIPTION’
-## 
-  
-─  preparing ‘Tidybio’:
-## 
-  
-   checking DESCRIPTION meta-information ...
-  
-✔  checking DESCRIPTION meta-information
-## 
-  
-─  installing the package to build vignettes
-## 
-  
-   creating vignettes ...
-  
-✔  creating vignettes (6.5s)
-## 
-  
-─  checking for LF line-endings in source and make files and shell scripts
-## 
-  
-─  checking for empty or unneeded directories
-## 
-  
-─  looking to see if a ‘data/datalist’ file should be added
-## 
-  
-─  building ‘Tidybio_0.1.0.tar.gz’ (627ms)
-## 
-  
-   
-## </pre>
+<p>To load the <code>proteins</code> and <code>subcell</code> datasets, run the following</p>
 
-<pre class = 'prettyprint lang-r'>library(Tidybio)</pre>
+<pre class = 'prettyprint lang-r'>data(proteins)
+data(subcell)</pre>
 
-<p>To load the <code>uniprot_region</code> dataset, run the following</p>
-
-<pre class = 'prettyprint lang-r'>data(uniprot_region)</pre>
-
-</article></slide><slide class=""><hgroup><h2>Converting the <code>uniprot_region</code> dataset to a tbl</h2></hgroup><article  id="converting-the-uniprot_region-dataset-to-a-tbl" class="build">
-
-<p>Convert <code>uniprot_region</code> to a tbl and assign it to a new object called <code>uniprot</code></p>
-
-<pre class = 'prettyprint lang-r'>uniprot &lt;- tbl_df(uniprot_region)</pre>
-
-</article></slide><slide class=""><hgroup><h2>Inspecting the <code>uniprot</code> dataset</h2></hgroup><article  id="inspecting-the-uniprot-dataset" class="build">
+</article></slide><slide class=""><hgroup><h2>Inspecting the <code>proteins</code> dataset</h2></hgroup><article  class="build" id="inspecting-the-proteins-dataset">
 
 <p>Use the <code>dim()</code> function to see how many rows (observations) and columns (variables) there are</p>
 
-<pre class = 'prettyprint lang-r'>dim(uniprot)</pre>
+<pre class = 'prettyprint lang-r'>dim(proteins)</pre>
 
-<pre >## [1] 33270     9</pre>
+<pre >## [1] 20430     8</pre>
 
-</article></slide><slide class=""><hgroup><h2>Inspecting the <code>uniprot</code> dataset</h2></hgroup><article  id="inspecting-the-uniprot-dataset-1" class="build">
+</article></slide><slide class=""><hgroup><h2>Inspecting the <code>proteins</code> dataset</h2></hgroup><article  class="build" id="inspecting-the-proteins-dataset-1">
 
 <p>Use the <code>glimpse()</code> function to see what kinds of variables the dataset contains</p>
 
-<pre class = 'prettyprint lang-r'>glimpse(uniprot)</pre>
+<pre class = 'prettyprint lang-r'>glimpse(proteins)</pre>
 
-<pre >## Observations: 33,270
-## Variables: 9
-## $ Entry          &lt;chr&gt; &quot;Q96M02&quot;, &quot;Q96M02&quot;, &quot;Q96M02&quot;, &quot;Q9C0C9&quot;, &quot;Q9C0C9&quot;,…
-## $ Protein.Name   &lt;chr&gt; &quot;(E2-independent) E3 ubiquitin-conjugating enzyme…
-## $ Gene.Name      &lt;chr&gt; &quot;C10orf90&quot;, &quot;C10orf90&quot;, &quot;C10orf90&quot;, &quot;UBE2O&quot;, &quot;UBE…
-## $ Protein.Length &lt;dbl&gt; 699, 699, 699, 1292, 1292, 342, 412, 1067, 1067, …
-## $ Cell.Region    &lt;chr&gt; &quot;Membrane&quot;, &quot;Cytoplasm&quot;, &quot;Nucleus&quot;, &quot;Cytoplasm&quot;, …
-## $ Gene.Start     &lt;dbl&gt; 126424997, 126424997, 126424997, 76389456, 763894…
-## $ Gene.End       &lt;dbl&gt; 126798708, 126798708, 126798708, 76453152, 764531…
-## $ Gene.Length    &lt;dbl&gt; 373711, 373711, 373711, 63696, 63696, 14978, 6684…
-## $ ENTREZID       &lt;dbl&gt; 118611, 118611, 118611, 63893, 63893, 63874, 1029…</pre>
+<pre >## Observations: 20,430
+## Variables: 8
+## $ uniprot_id       &lt;chr&gt; &quot;P04217&quot;, &quot;Q9NQ94&quot;, &quot;P01023&quot;, &quot;A8K2U0&quot;, &quot;U3KPV4…
+## $ gene_name        &lt;chr&gt; &quot;A1BG&quot;, &quot;A1CF&quot;, &quot;A2M&quot;, &quot;A2ML1&quot;, &quot;A3GALT2&quot;, &quot;A4G…
+## $ gene_name_alt    &lt;chr&gt; NA, &quot;ACF ASP&quot;, &quot;CPAMD5 FWP007&quot;, &quot;CPAMD9&quot;, &quot;A3GA…
+## $ protein_name     &lt;chr&gt; &quot;Alpha-1B-glycoprotein &quot;, &quot;APOBEC1 complementat…
+## $ protein_name_alt &lt;chr&gt; &quot;Alpha-1-B glycoprotein)&quot;, &quot;APOBEC1-stimulating…
+## $ sequence         &lt;chr&gt; &quot;MSMLVVFLLLWGVTWGPVTEAAIFYETQPSLWAESESLLKPLANVT…
+## $ length           &lt;dbl&gt; 495, 594, 1474, 1454, 340, 353, 340, 546, 672, …
+## $ mass             &lt;dbl&gt; 54254, 65202, 163291, 161107, 38754, 40499, 394…</pre>
 
-</article></slide><slide class=""><hgroup><h2>Basic Data Types in R</h2></hgroup><article  id="basic-data-types-in-r" class="build">
+</article></slide><slide class=""><hgroup><h2>Basic Data Types in R</h2></hgroup><article  class="build" id="basic-data-types-in-r">
 
 <p>R has 6 basic data ypes -</p>
 
@@ -3224,43 +3179,43 @@ slide:not(.current) .plotly.html-widget{
 
 <p><strong>factor</strong>. A <strong>factor</strong> is a collection of <em>ordered</em> character variables</p>
 
-</article></slide><slide class=""><hgroup><h2>Basic Data Types in R</h2></hgroup><article  id="basic-data-types-in-r-1" class="build">
+</article></slide><slide class=""><hgroup><h2>Basic Data Types in R</h2></hgroup><article  class="build" id="basic-data-types-in-r-1">
 
 <p>In addition to the <code>glimpse()</code> function, you can use the <code>class()</code> function to determine the data type of a specific column</p>
 
-<pre class = 'prettyprint lang-r'>class(uniprot$Gene.Length)</pre>
+<pre class = 'prettyprint lang-r'>class(proteins$length)</pre>
 
 <pre >## [1] &quot;numeric&quot;</pre>
 
-</article></slide><slide class=""><hgroup><h2>(Re)Introducing <code>%&gt;%</code></h2></hgroup><article  id="reintroducing" class="build">
+</article></slide><slide class=""><hgroup><h2>(Re)Introducing <code>%&gt;%</code></h2></hgroup><article  class="build" id="reintroducing">
 
 <p>The <code>%&gt;%</code> operator is a way of &ldquo;chaining&rdquo; together strings of commands that make reading your code easy. The following code chunk illustrates how <code>%&gt;%</code> works</p>
 
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  select(Entry, Protein.Length) %&gt;% 
-  filter(Protein.Length &gt; 500) %&gt;% 
+<pre class = 'prettyprint lang-r'>proteins %&gt;% 
+  select(uniprot_id, length) %&gt;% 
+  filter(length &gt; 500) %&gt;% 
   head(1)</pre>
 
 <pre >## # A tibble: 1 x 2
-##   Entry  Protein.Length
-##   &lt;chr&gt;           &lt;dbl&gt;
-## 1 Q96M02            699</pre>
+##   uniprot_id length
+##   &lt;chr&gt;       &lt;dbl&gt;
+## 1 Q9NQ94        594</pre>
 
-<p>The above code chunk does the following - it takes you dataset, <code>uniprot</code>, and &ldquo;pipes&rdquo; it into <code>select()</code></p>
+<p>The above code chunk does the following - it takes you dataset, <code>proteins</code>, and &ldquo;pipes&rdquo; it into <code>select()</code></p>
 
-</article></slide><slide class=""><hgroup><h2>(Re)Introducing <code>%&gt;%</code></h2></hgroup><article  id="reintroducing-1" class="build">
+</article></slide><slide class=""><hgroup><h2>(Re)Introducing <code>%&gt;%</code></h2></hgroup><article  class="build" id="reintroducing-1">
 
-<p>The second line selects just the columns named &ldquo;Entry&rdquo; and Protein.Length&quot; and &ldquo;pipes&rdquo; that into <code>filter()</code>. The final line selects proteins that are longer than 500 amino acids</p>
+<p>The second line selects just the columns named <code>uniprot_id</code> and <code>length</code> and &ldquo;pipes&rdquo; that into <code>filter()</code>. The final line selects proteins that are longer than 500 amino acids</p>
 
 <p>When you see <code>%&gt;%</code>, think &ldquo;and then&rdquo;</p>
 
 <p>The alternative to using <code>%&gt;%</code> is running the following code</p>
 
-<pre class = 'prettyprint lang-r'>filter(select(uniprot, Entry, Protein.Length), Protein.Length &gt; 500)</pre>
+<pre class = 'prettyprint lang-r'>filter(select(proteins, uniprot_id, length), length &gt; 500)</pre>
 
 <p>Although this is only one line as opposed to three, it’s both more difficult to write and more difficult to read</p>
 
-</article></slide><slide class=""><hgroup><h2>Introducing the main dplyr verbs</h2></hgroup><article  id="introducing-the-main-dplyr-verbs" class="build">
+</article></slide><slide class=""><hgroup><h2>Introducing the main dplyr verbs</h2></hgroup><article  class="build" id="introducing-the-main-dplyr-verbs">
 
 <p>dplyr is a package that contains a suite of functions that allow you to easily manipulate a dataset</p>
 
@@ -3274,150 +3229,142 @@ slide:not(.current) .plotly.html-widget{
 
 <p>The main verbs we will cover are <code>select()</code>, <code>filter()</code>, <code>arrange()</code>, <code>mutate()</code>, and <code>summarise()</code>. These all combine naturally with <code>group_by()</code> which allows you to perform any operation &ldquo;by group&rdquo;</p>
 
-</article></slide><slide class=""><hgroup><h2><code>select()</code></h2></hgroup><article  id="select" class="build">
+</article></slide><slide class=""><hgroup><h2><code>select()</code></h2></hgroup><article  class="build" id="select">
 
 <p>The <code>select()</code> verb allows you to extract specific columns from your dataset</p>
 
 <p>The most basic <code>select()</code> is one where you comma separate a list of columns you want included</p>
 
-<p>For example, if you only want to select the &ldquo;Gene.Name&rdquo; and &ldquo;Protein.Length&rdquo; columns, run the following code chunk</p>
+<p>For example, if you only want to select the <code>uniprot_id</code> and <code>length</code> columns, run the following code chunk</p>
 
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  select(Gene.Name, Protein.Length) %&gt;% 
+<pre class = 'prettyprint lang-r'>proteins %&gt;% 
+  select(uniprot_id, length) %&gt;% 
   head(1)</pre>
 
 <pre >## # A tibble: 1 x 2
-##   Gene.Name Protein.Length
-##   &lt;chr&gt;              &lt;dbl&gt;
-## 1 C10orf90             699</pre>
+##   uniprot_id length
+##   &lt;chr&gt;       &lt;dbl&gt;
+## 1 P04217        495</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>select()</code></h2></hgroup><article  id="select-1" class="build">
+</article></slide><slide class=""><hgroup><h2><code>select()</code></h2></hgroup><article  class="build" id="select-1">
 
-<p>If you want to select all columns <em>except</em> &ldquo;Gene.Name&rdquo;, run the following</p>
+<p>If you want to select all columns <em>except</em> <code>uniprot_id</code>, run the following</p>
 
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  select(-Gene.Name) %&gt;% 
+<pre class = 'prettyprint lang-r'>proteins %&gt;% 
+  select(-uniprot_id) %&gt;% 
   head(1)</pre>
 
-<pre >## # A tibble: 1 x 8
-##   Entry Protein.Name Protein.Length Cell.Region Gene.Start Gene.End
-##   &lt;chr&gt; &lt;chr&gt;                 &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;    &lt;dbl&gt;
-## 1 Q96M… (E2-indepen…            699 Membrane     126424997   1.27e8
-## # … with 2 more variables: Gene.Length &lt;dbl&gt;, ENTREZID &lt;dbl&gt;</pre>
+<pre >## # A tibble: 1 x 7
+##   gene_name gene_name_alt protein_name protein_name_alt sequence length
+##   &lt;chr&gt;     &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;            &lt;chr&gt;     &lt;dbl&gt;
+## 1 A1BG      &lt;NA&gt;          &quot;Alpha-1B-g… Alpha-1-B glyco… MSMLVVF…    495
+## # … with 1 more variable: mass &lt;dbl&gt;</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>select()</code></h2></hgroup><article  id="select-2" class="build">
+</article></slide><slide class=""><hgroup><h2><code>select()</code></h2></hgroup><article  class="build" id="select-2">
 
 <p>Finally, you can provide a range of columns to return two columns and everything in between. For example</p>
 
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  select(Entry:Protein.Length) %&gt;% 
+<pre class = 'prettyprint lang-r'>proteins %&gt;% 
+  select(uniprot_id:protein_name) %&gt;% 
   head(1)</pre>
 
 <pre >## # A tibble: 1 x 4
-##   Entry  Protein.Name                              Gene.Name Protein.Length
-##   &lt;chr&gt;  &lt;chr&gt;                                     &lt;chr&gt;              &lt;dbl&gt;
-## 1 Q96M02 (E2-independent) E3 ubiquitin-conjugatin… C10orf90             699</pre>
+##   uniprot_id gene_name gene_name_alt protein_name            
+##   &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;         &lt;chr&gt;                   
+## 1 P04217     A1BG      &lt;NA&gt;          &quot;Alpha-1B-glycoprotein &quot;</pre>
 
-<p>This code selects the following columns - &ldquo;Entry&rdquo;, &ldquo;Protein.Name&rdquo;, &ldquo;Gene.Name&rdquo;, and &ldquo;Protein.Length&rdquo;</p>
+<p>This code selects the following columns - <code>uniprot_id</code>, <code>gene_name</code>, <code>gene_name_alt</code>, and <code>protein_name</code></p>
 
-</article></slide><slide class=""><hgroup><h2><code>select()</code> exercise</h2></hgroup><article  id="select-exercise" class="build">
+</article></slide><slide class=""><hgroup><h2><code>select()</code> exercise</h2></hgroup><article  class="build" id="select-exercise">
 
-<p>Select the following columns - &ldquo;Protein.Length&rdquo;, &ldquo;Gene.Start&rdquo;, &ldquo;Gene.End&rdquo;, and &ldquo;Gene.Length&rdquo;</p>
+<p>Select the following columns - <code>uniprot_id</code>, <code>sequence</code>, <code>length</code>, and <code>mass</code></p>
 
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  select(Protein.Length, Gene.Start:Gene.Length)</pre>
+<pre class = 'prettyprint lang-r'>proteins %&gt;% 
+  select(uniprot_id, sequence:mass)</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>filter()</code></h2></hgroup><article  id="filter" class="build">
+</article></slide><slide class=""><hgroup><h2><code>filter()</code></h2></hgroup><article  class="build" id="filter">
 
 <p>The <code>filter()</code> verb allows you to choose rows based on certain condition(s) and discard everything else</p>
 
 <p>All filters are performed on some logical statement</p>
 
-<p>If a row meets the condition of this statement (i.e. is true) then it gets chosen (or &ldquo;filtered&rdquo;). All other rows are discared</p>
+<p>If a row meets the condition of this statement (i.e. is true) then it gets chosen (or &ldquo;filtered&rdquo;). All other rows are discarded</p>
 
-</article></slide><slide class=""><hgroup><h2><code>filter()</code></h2></hgroup><article  id="filter-1" class="build">
+</article></slide><slide class=""><hgroup><h2><code>filter()</code></h2></hgroup><article  class="build" id="filter-1">
 
 <p>Filtering can be performed on categorical data</p>
 
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  filter(Cell.Region == &quot;Membrane&quot;) %&gt;% 
+<pre class = 'prettyprint lang-r'>subcell %&gt;% 
+  filter(location == &quot;Ribosome&quot;) %&gt;% 
   head(1)</pre>
 
-<pre >## # A tibble: 1 x 9
-##   Entry Protein.Name Gene.Name Protein.Length Cell.Region Gene.Start
-##   &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
-## 1 Q96M… (E2-indepen… C10orf90             699 Membrane     126424997
-## # … with 3 more variables: Gene.End &lt;dbl&gt;, Gene.Length &lt;dbl&gt;,
-## #   ENTREZID &lt;dbl&gt;</pre>
+<pre >## # A tibble: 1 x 5
+##   ensembl_prot_id gene_name go_term    location score
+##   &lt;chr&gt;           &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;    &lt;dbl&gt;
+## 1 18S_rRNA        18S_rRNA  GO:0005840 Ribosome  3.39</pre>
 
-<p>The code chunk above only selects membrane-associated proteins</p>
+<p>The code chunk above only selects ribosome-associated proteins</p>
 
 <p>Note that <code>filter()</code> only applies to rows, and has no effect on columns</p>
 
-</article></slide><slide class=""><hgroup><h2><code>filter()</code></h2></hgroup><article  id="filter-2" class="build">
+</article></slide><slide class=""><hgroup><h2><code>filter()</code></h2></hgroup><article  class="build" id="filter-2">
 
 <p>Filtering can also be performed on numerical data</p>
 
-<p>For example, to select proteins longer than 500 amino acids, run the following code</p>
+<p>For example, to select proteins with a score greater than 4, run the following code</p>
 
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  filter(Protein.Length &gt; 500) %&gt;% 
+<pre class = 'prettyprint lang-r'>subcell %&gt;% 
+  filter(score &gt; 4) %&gt;% 
   head(1)</pre>
 
-<pre >## # A tibble: 1 x 9
-##   Entry Protein.Name Gene.Name Protein.Length Cell.Region Gene.Start
-##   &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
-## 1 Q96M… (E2-indepen… C10orf90             699 Membrane     126424997
-## # … with 3 more variables: Gene.End &lt;dbl&gt;, Gene.Length &lt;dbl&gt;,
-## #   ENTREZID &lt;dbl&gt;</pre>
+<pre >## # A tibble: 1 x 5
+##   ensembl_prot_id gene_name go_term    location           score
+##   &lt;chr&gt;           &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;              &lt;dbl&gt;
+## 1 ENSP00000000233 ARF5      GO:0005575 cellular_component  4.41</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>filter()</code></h2></hgroup><article  id="filter-3" class="build">
+</article></slide><slide class=""><hgroup><h2><code>filter()</code></h2></hgroup><article  class="build" id="filter-3">
 
 <p>To filter on multiple conditions, you can write a sequence of <code>filter()</code> commands</p>
 
-<p>For example, to select membrane-associated proteins <em>and</em> proteins that are longer than 500 amino acids, run the following</p>
+<p>For example, to select ribosome-associated proteins <em>and</em> proteins with a score greater than 4, run the following</p>
 
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  filter(Cell.Region== &quot;Membrane&quot;) %&gt;% 
-  filter(Protein.Length &gt; 500) %&gt;% 
+<pre class = 'prettyprint lang-r'>subcell %&gt;% 
+  filter(location == &quot;Ribosome&quot;) %&gt;% 
+  filter(score &gt; 4) %&gt;% 
   head(1)</pre>
 
-<pre >## # A tibble: 1 x 9
-##   Entry Protein.Name Gene.Name Protein.Length Cell.Region Gene.Start
-##   &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
-## 1 Q96M… (E2-indepen… C10orf90             699 Membrane     126424997
-## # … with 3 more variables: Gene.End &lt;dbl&gt;, Gene.Length &lt;dbl&gt;,
-## #   ENTREZID &lt;dbl&gt;</pre>
+<pre >## # A tibble: 1 x 5
+##   ensembl_prot_id gene_name go_term    location score
+##   &lt;chr&gt;           &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;    &lt;dbl&gt;
+## 1 ENSP00000053468 MRPS10    GO:0005840 Ribosome     5</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>filter()</code></h2></hgroup><article  id="filter-4" class="build">
+</article></slide><slide class=""><hgroup><h2><code>filter()</code></h2></hgroup><article  class="build" id="filter-4">
 
 <p>To avoid writing multiple <code>filter()</code> commands, multiple logical statements can be put inside a single <code>filter()</code> command, separated by commas</p>
 
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  filter(Cell.Region== &quot;Membrane&quot;,
-         Protein.Length &gt; 500) %&gt;% 
+<pre class = 'prettyprint lang-r'>subcell %&gt;% 
+  filter(location == &quot;Ribosome&quot;,
+         score &gt; 4) %&gt;% 
   head(1)</pre>
 
-<pre >## # A tibble: 1 x 9
-##   Entry Protein.Name Gene.Name Protein.Length Cell.Region Gene.Start
-##   &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
-## 1 Q96M… (E2-indepen… C10orf90             699 Membrane     126424997
-## # … with 3 more variables: Gene.End &lt;dbl&gt;, Gene.Length &lt;dbl&gt;,
-## #   ENTREZID &lt;dbl&gt;</pre>
+<pre >## # A tibble: 1 x 5
+##   ensembl_prot_id gene_name go_term    location score
+##   &lt;chr&gt;           &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;    &lt;dbl&gt;
+## 1 ENSP00000053468 MRPS10    GO:0005840 Ribosome     5</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>filter()</code> exercise</h2></hgroup><article  id="filter-exercise" class="build">
+</article></slide><slide class=""><hgroup><h2><code>filter()</code> exercise</h2></hgroup><article  class="build" id="filter-exercise">
 
-<p>Filter all proteins NOT associated with a membrane, and that are at most 300 amino acids in length</p>
+<p>Filter all proteins NOT associated with the ribosome, with a score no more than 4</p>
 
 <p><code>!=</code> = &ldquo;not equal to&rdquo;</p>
 
 <p><code>&lt;=</code> = &ldquo;less than or equal to&rdquo;</p>
 
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  filter(Cell.Region != &quot;Membrane&quot;,
-         Protein.Length &lt;= 300)</pre>
+<pre class = 'prettyprint lang-r'>subcell %&gt;% 
+  filter(location != &quot;Ribosome&quot;,
+         score &lt;= 4)</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>arrange()</code></h2></hgroup><article  id="arrange" class="build">
+</article></slide><slide class=""><hgroup><h2><code>arrange()</code></h2></hgroup><article  class="build" id="arrange">
 
 <p>You can use the <code>arrange()</code> verb to sort rows</p>
 
@@ -3425,201 +3372,180 @@ slide:not(.current) .plotly.html-widget{
 
 <p>For example, to sort rows from smallest to largest protein, run the following</p>
 
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  arrange(Protein.Length) %&gt;% 
+<pre class = 'prettyprint lang-r'>proteins %&gt;% 
+  arrange(length) %&gt;% 
   head(3)</pre>
 
-<pre >## # A tibble: 3 x 9
-##   Entry Protein.Name Gene.Name Protein.Length Cell.Region Gene.Start
-##   &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
-## 1 P0CJ… Humanin-lik… MTRNR2L1              24 Cytoplasm     22523111
-## 2 P0CJ… Humanin-lik… MTRNR2L1              24 Extracellu…   22523111
-## 3 P0CJ… Humanin-lik… MTRNR2L10             24 Cytoplasm     55181391
-## # … with 3 more variables: Gene.End &lt;dbl&gt;, Gene.Length &lt;dbl&gt;,
-## #   ENTREZID &lt;dbl&gt;</pre>
+<pre >## # A tibble: 3 x 8
+##   uniprot_id gene_name gene_name_alt protein_name protein_name_alt sequence
+##   &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;            &lt;chr&gt;   
+## 1 P0DPR3     TRDD1     &lt;NA&gt;          T cell rece… &lt;NA&gt;             EI      
+## 2 P0DPI4     TRBD1     &lt;NA&gt;          T cell rece… &lt;NA&gt;             GTGG    
+## 3 P01858     &lt;NA&gt;      &lt;NA&gt;          &quot;Phagocytos… Tuftsin)         TKPR    
+## # … with 2 more variables: length &lt;dbl&gt;, mass &lt;dbl&gt;</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>arrange()</code></h2></hgroup><article  id="arrange-1" class="build">
+</article></slide><slide class=""><hgroup><h2><code>arrange()</code></h2></hgroup><article  class="build" id="arrange-1">
 
 <p>To reverse this order, use the <code>desc()</code> function within <code>arrange()</code></p>
 
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  arrange(desc(Protein.Length)) %&gt;% 
+<pre class = 'prettyprint lang-r'>proteins %&gt;% 
+  arrange(desc(length)) %&gt;% 
   head(3)</pre>
 
-<pre >## # A tibble: 3 x 9
-##   Entry Protein.Name Gene.Name Protein.Length Cell.Region Gene.Start
-##   &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
-## 1 Q8WZ… Titin (EC 2… TTN                34350 Cytoplasm    178525989
-## 2 Q8WZ… Titin (EC 2… TTN                34350 Nucleus      178525989
-## 3 Q8WZ… Titin (EC 2… TTN                34350 Extracellu…  178525989
-## # … with 3 more variables: Gene.End &lt;dbl&gt;, Gene.Length &lt;dbl&gt;,
-## #   ENTREZID &lt;dbl&gt;</pre>
+<pre >## # A tibble: 3 x 8
+##   uniprot_id gene_name gene_name_alt protein_name protein_name_alt sequence
+##   &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;            &lt;chr&gt;   
+## 1 Q8WZ42     TTN       &lt;NA&gt;          &quot;Titin &quot;     EC 2.7.11.1) (C… MTTQAPT…
+## 2 Q8WXI7     MUC16     CA125         &quot;Mucin-16 &quot;  MUC-16) (Ovaria… MLKPSGL…
+## 3 Q8NF91     SYNE1     C6orf98 KIAA… &quot;Nesprin-1 &quot; Enaptin) (KASH … MATSRGA…
+## # … with 2 more variables: length &lt;dbl&gt;, mass &lt;dbl&gt;</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>arrange()</code> exercise</h2></hgroup><article  id="arrange-exercise" class="build">
+</article></slide><slide class=""><hgroup><h2><code>arrange()</code> exercise</h2></hgroup><article  class="build" id="arrange-exercise">
 
 <p>What happens when you apply <code>arrange()</code> to a categorical variable?</p>
 
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  arrange(Gene.Name) %&gt;% 
+<pre class = 'prettyprint lang-r'>proteins %&gt;% 
+  arrange(gene_name_alt) %&gt;% 
   head(6)</pre>
 
-<pre >## # A tibble: 6 x 9
-##   Entry Protein.Name Gene.Name Protein.Length Cell.Region Gene.Start
-##   &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
-## 1 P042… Alpha-1B-gl… A1BG                 495 Extracellu…   58345178
-## 2 Q9NQ… APOBEC1 com… A1CF                 594 Cytoplasm     50799409
-## 3 Q9NQ… APOBEC1 com… A1CF                 594 Nucleus       50799409
-## 4 P010… Alpha-2-mac… A2M                 1474 Cytoplasm      9067664
-## 5 P010… Alpha-2-mac… A2M                 1474 Extracellu…    9067664
-## 6 A8K2… Alpha-2-mac… A2ML1               1454 Extracellu…    8822621
-## # … with 3 more variables: Gene.End &lt;dbl&gt;, Gene.Length &lt;dbl&gt;,
-## #   ENTREZID &lt;dbl&gt;</pre>
+<pre >## # A tibble: 6 x 8
+##   uniprot_id gene_name gene_name_alt protein_name protein_name_alt sequence
+##   &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;            &lt;chr&gt;   
+## 1 O14569     CYB561D2  101F6 LUCA12… &quot;Cytochrome… EC 7.2.1.3) (Pu… MALSAET…
+## 2 P18054     ALOX12    12LO LOG12    &quot;Arachidona… 12S-LOX) (12S-l… MGRYRIR…
+## 3 O43715     TRIAP1    15E1.1 HSPC1… &quot;TP53-regul… Protein 15E1.1)… MNSVGEA…
+## 4 O43716     GATC      15E1.2        Glutamyl-tR… Gln) amidotrans… MWSRLVW…
+## 5 Q14596     NBR1      1A13B KIAA00… &quot;Next to BR… Cell migration-… MEPQVTL…
+## 6 O14931     NCR3      1C7 LY117     &quot;Natural cy… Activating natu… MAWMLLL…
+## # … with 2 more variables: length &lt;dbl&gt;, mass &lt;dbl&gt;</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>mutate()</code></h2></hgroup><article  id="mutate" class="build">
+</article></slide><slide class=""><hgroup><h2><code>mutate()</code></h2></hgroup><article  class="build" id="mutate">
 
 <p>The <code>mutate()</code> verb, unlike the ones covered so far, creates new variable(s) i.e. new column(s). For example</p>
 
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  mutate(sqrt_length = sqrt(Protein.Length)) %&gt;% 
+<pre class = 'prettyprint lang-r'>proteins %&gt;% 
+  mutate(sqrt_length = sqrt(length)) %&gt;% 
   head(1)</pre>
 
-<pre >## # A tibble: 1 x 10
-##   Entry Protein.Name Gene.Name Protein.Length Cell.Region Gene.Start
-##   &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
-## 1 Q96M… (E2-indepen… C10orf90             699 Membrane     126424997
-## # … with 4 more variables: Gene.End &lt;dbl&gt;, Gene.Length &lt;dbl&gt;,
-## #   ENTREZID &lt;dbl&gt;, sqrt_length &lt;dbl&gt;</pre>
+<pre >## # A tibble: 1 x 9
+##   uniprot_id gene_name gene_name_alt protein_name protein_name_alt sequence
+##   &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;            &lt;chr&gt;   
+## 1 P04217     A1BG      &lt;NA&gt;          &quot;Alpha-1B-g… Alpha-1-B glyco… MSMLVVF…
+## # … with 3 more variables: length &lt;dbl&gt;, mass &lt;dbl&gt;, sqrt_length &lt;dbl&gt;</pre>
 
-<p>The code chunk above takes all the elements of the column &ldquo;Protein.Length&rdquo;, evaluates the square root of each element, and populates a new column called &ldquo;sqrt_length&rdquo; with these results</p>
+<p>The code chunk above takes all the elements of the column <code>length</code>, evaluates the square root of each element, and populates a new column called <code>sqrt_length</code> with these results</p>
 
-</article></slide><slide class=""><hgroup><h2><code>mutate()</code></h2></hgroup><article  id="mutate-1" class="build">
+</article></slide><slide class=""><hgroup><h2><code>mutate()</code></h2></hgroup><article  class="build" id="mutate-1">
 
 <p>Multiple columns can be used as inputs. For example</p>
 
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  mutate(protein_gene_length = Protein.Length/Gene.Length) %&gt;% 
+<pre class = 'prettyprint lang-r'>proteins %&gt;% 
+  mutate(protein_length_mass = length/mass) %&gt;% 
   head(1)</pre>
 
-<pre >## # A tibble: 1 x 10
-##   Entry Protein.Name Gene.Name Protein.Length Cell.Region Gene.Start
-##   &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
-## 1 Q96M… (E2-indepen… C10orf90             699 Membrane     126424997
-## # … with 4 more variables: Gene.End &lt;dbl&gt;, Gene.Length &lt;dbl&gt;,
-## #   ENTREZID &lt;dbl&gt;, protein_gene_length &lt;dbl&gt;</pre>
+<pre >## # A tibble: 1 x 9
+##   uniprot_id gene_name gene_name_alt protein_name protein_name_alt sequence
+##   &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;            &lt;chr&gt;   
+## 1 P04217     A1BG      &lt;NA&gt;          &quot;Alpha-1B-g… Alpha-1-B glyco… MSMLVVF…
+## # … with 3 more variables: length &lt;dbl&gt;, mass &lt;dbl&gt;,
+## #   protein_length_mass &lt;dbl&gt;</pre>
 
-<p>This code takes the protein length of each protein and divides it by the corresponding gene length</p>
+<p>This code takes the length of each protein and divides it by its mass</p>
 
-<p>The results are stored in a new column called &ldquo;protein_gene_length&rdquo;</p>
+<p>The results are stored in a new column called <code>protein_length_mass</code></p>
 
-</article></slide><slide class=""><hgroup><h2><code>mutate()</code> exercise</h2></hgroup><article  id="mutate-exercise" class="build">
+</article></slide><slide class=""><hgroup><h2><code>mutate()</code> exercise</h2></hgroup><article  class="build" id="mutate-exercise">
 
-<p>Create a new column (give it any name you like) and fill it with gene lengths divided by 1000</p>
+<p>Create a new column (give it any name you like) and fill it with protein lengths divided by 100</p>
 
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  mutate(gene_length_1000 = Gene.Length/1000)</pre>
+<pre class = 'prettyprint lang-r'>proteins %&gt;% 
+  mutate(protein_length_100 = length/100)</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>summarise()</code></h2></hgroup><article  id="summarise" class="build">
+</article></slide><slide class=""><hgroup><h2><code>summarise()</code></h2></hgroup><article  class="build" id="summarise">
 
 <p><code>summarise()</code> produces a new dataframe that aggregates that values of a column based on a certain condition.</p>
 
-<p>For example, to calculate the mean protein and gene length, run the following</p>
+<p>For example, to calculate the mean protein length and mass, run the following</p>
 
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  summarise(mean(Protein.Length), mean(Gene.Length))</pre>
-
-<pre >## # A tibble: 1 x 2
-##   `mean(Protein.Length)` `mean(Gene.Length)`
-##                    &lt;dbl&gt;               &lt;dbl&gt;
-## 1                   607.              69543.</pre>
-
-</article></slide><slide class=""><hgroup><h2><code>summarise()</code></h2></hgroup><article  id="summarise-1" class="build">
-
-<p>You can assign you own names by running the following</p>
-
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  summarise(protein_mean = mean(Protein.Length), 
-            gene_mean = mean(Gene.Length))</pre>
+<pre class = 'prettyprint lang-r'>proteins %&gt;% 
+  summarise(mean(length), mean(mass))</pre>
 
 <pre >## # A tibble: 1 x 2
-##   protein_mean gene_mean
-##          &lt;dbl&gt;     &lt;dbl&gt;
-## 1         607.    69543.</pre>
+##   `mean(length)` `mean(mass)`
+##            &lt;dbl&gt;        &lt;dbl&gt;
+## 1           557.       62061.</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>summarise()</code> exercise</h2></hgroup><article  id="summarise-exercise" class="build">
+</article></slide><slide class=""><hgroup><h2><code>summarise()</code></h2></hgroup><article  class="build" id="summarise-1">
+
+<p>You can assign your own names by running the following</p>
+
+<pre class = 'prettyprint lang-r'>proteins %&gt;% 
+  summarise(mean_length = mean(length), 
+            mean_mass = mean(mass))</pre>
+
+<pre >## # A tibble: 1 x 2
+##   mean_length mean_mass
+##         &lt;dbl&gt;     &lt;dbl&gt;
+## 1        557.    62061.</pre>
+
+</article></slide><slide class=""><hgroup><h2><code>summarise()</code> exercise</h2></hgroup><article  class="build" id="summarise-exercise">
 
 <p>Make a new table that contains the mean, median and standard deviations of protein lengths</p>
 
 <p>Use the <code>median()</code> and <code>sd()</code> functions to calculate median and standard deviation</p>
 
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  summarise(protein_mean = mean(Protein.Length), 
-            protein_median = median(Protein.Length),
-            protein_sd = sd(Protein.Length))</pre>
+<pre class = 'prettyprint lang-r'>proteins %&gt;% 
+  summarise(protein_mean = mean(length), 
+            protein_median = median(length),
+            protein_sd = sd(length))</pre>
 
 <pre >## # A tibble: 1 x 3
 ##   protein_mean protein_median protein_sd
 ##          &lt;dbl&gt;          &lt;dbl&gt;      &lt;dbl&gt;
-## 1         607.            446       674.</pre>
+## 1         557.            414       596.</pre>
 
-</article></slide><slide class=""><hgroup><h2><code>group_by()</code></h2></hgroup><article  id="group_by" class="build">
+</article></slide><slide class=""><hgroup><h2><code>group_by()</code></h2></hgroup><article  class="build" id="group_by">
 
 <p><code>group_by()</code> and <code>summarise()</code> can be used in combination to summarise by groups</p>
 
-<p>For example, if you’d like to know the mean length of proteins in each region, run the following</p>
+<p>For example, if you’d like to know the mean location score of proteins in each region, run the following</p>
 
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  group_by(Cell.Region) %&gt;% 
-  summarise(mean(Protein.Length)) </pre>
+<pre class = 'prettyprint lang-r'>subcell %&gt;% 
+  group_by(location) %&gt;% 
+  summarise(mean(score)) </pre>
 
-<pre >## # A tibble: 5 x 2
-##   Cell.Region   `mean(Protein.Length)`
-##   &lt;chr&gt;                          &lt;dbl&gt;
-## 1 Cytoplasm                       631.
-## 2 Extracellular                   590.
-## 3 Membrane                        605.
-## 4 Mitochondrion                   471.
-## 5 Nucleus                         621.</pre>
+<pre >## # A tibble: 3,046 x 2
+##    location                                                  `mean(score)`
+##    &lt;chr&gt;                                                             &lt;dbl&gt;
+##  1 [Ni-Fe] hydrogenase complex                                        1.27
+##  2 1-alkyl-2-acetylglycerophosphocholine esterase complex             1.19
+##  3 1,3-beta-D-glucan synthase complex                                 1.27
+##  4 3-isopropylmalate dehydratase complex                              1.93
+##  5 3-methyl-2-oxobutanoate dehydrogenase (lipoamide) complex          1.42
+##  6 3-methylcrotonyl-CoA carboxylase complex, mitochondrial            4.29
+##  7 3-phenylpropionate dioxygenase complex                             2.62
+##  8 3M complex                                                         3.52
+##  9 4-aminobutyrate transaminase complex                               1.07
+## 10 5-lipoxygenase complex                                             1.05
+## # … with 3,036 more rows</pre>
 
-</article></slide><slide class=""><hgroup><h2>Putting it all togther</h2></hgroup><article  id="putting-it-all-togther" class="build">
-
-<pre class = 'prettyprint lang-r'>uniprot %&gt;% 
-  select(Cell.Region, Gene.Length) %&gt;% 
-  filter(Gene.Length &lt; 5000) %&gt;% 
-  mutate(gene_short = Gene.Length/100) %&gt;% 
-  group_by(Cell.Region) %&gt;% 
-  summarise(mean_gene_length = mean(gene_short)) %&gt;% 
-  arrange(desc(mean_gene_length))</pre>
-
-<pre >## # A tibble: 5 x 2
-##   Cell.Region   mean_gene_length
-##   &lt;chr&gt;                    &lt;dbl&gt;
-## 1 Mitochondrion             29.6
-## 2 Cytoplasm                 29.3
-## 3 Extracellular             28.9
-## 4 Nucleus                   28.3
-## 5 Membrane                  26.2</pre>
-
-</article></slide><slide class=""><hgroup><h2>Saving a new dataset</h2></hgroup><article  id="saving-a-new-dataset" class="build">
+</article></slide><slide class=""><hgroup><h2>Saving a new dataset</h2></hgroup><article  class="build" id="saving-a-new-dataset">
 
 <p>If you’d like to save the output of your wrangling, you will need to use the <code>&lt;-</code> or <code>-&gt;</code> operators</p>
 
-<pre class = 'prettyprint lang-r'>uniprot_new &lt;-  uniprot %&gt;% 
-                  select(Cell.Region, Gene.Length) %&gt;% 
-                  filter(Gene.Length &lt; 5000) %&gt;% 
-                  mutate(gene_short = Gene.Length/100) %&gt;% 
-                  group_by(Cell.Region) %&gt;% 
-                  summarise(mean_gene_length = mean(gene_short)) %&gt;% 
-                  arrange(desc(mean_gene_length)) </pre>
+<pre class = 'prettyprint lang-r'>subcell_new &lt;- subcell %&gt;% 
+                 group_by(location) %&gt;% 
+                 summarise(mean(score))  </pre>
 
-<p>To save <code>uniprot_new</code> as a new file (e.g. csv)</p>
+<p>To save <code>subcell_new</code> as a new file (e.g. csv)</p>
 
-<pre class = 'prettyprint lang-r'>write_csv(uniprot_new, &quot;uniprot_new.csv&quot;)</pre>
+<pre class = 'prettyprint lang-r'>write_csv(subcell_new, &quot;subcell_new.csv&quot;)</pre>
 
-</article></slide><slide class=""><hgroup><h2>For more help</h2></hgroup><article  id="for-more-help" class="build">
+</article></slide><slide class=""><hgroup><h2>For more help</h2></hgroup><article  class="build" id="for-more-help">
 
-<p>Run the following to access the Dplyr vignette for this course</p>
+<p>Run the following to access the Dplyr vignette</p>
 
-<pre class = 'prettyprint lang-r'>browseVignettes(&quot;Tidybio&quot;)</pre></article></slide>
+<pre class = 'prettyprint lang-r'>browseVignettes(&quot;dplyr&quot;)</pre></article></slide>
 
 
   <slide class="backdrop"></slide>

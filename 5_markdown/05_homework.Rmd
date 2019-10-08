@@ -1,9 +1,10 @@
 ---
-title: ""
+title: "" #<-- add a title
 subtitle: "Class 5 homework"
 ---
 ## Load libraries
 ```{r setup}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 library(tidyverse)
 library(tidybiology)
 ```
