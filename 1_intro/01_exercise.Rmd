@@ -23,7 +23,7 @@ You can open a new R Markdown file by going to **File > New File > R Markdown...
 
 To add a new code chunk, press *Cmd+Option+I* (*Ctrl+Alt+I* on Windows), or click the *Insert* button at the top of this document, then select *R*. R Markdown will add a new, empty chunk at your cursor's location.
 
-Try making a code chunk below:
+Try inserting a code chunk below:
 
 
 Now make a code chunk using the keyboard shortcut. Trust me: it's worth learning the shortcuts:
@@ -61,9 +61,7 @@ By the way, you only need to use code comments _inside_ of code chunks. R knows 
 exp(1)^(pi * sqrt(-1)) #this is a better example, but R freaks out; sorry Euler
 ```
 
-
-# Text formatting
-
+# Text formatting  
 Have you noticed the funny highlighting that appears in this document? R Markdown treats text surrounded by *asterisks*, **double asterisks**, and `backticks` in special ways. It is R Markdown's way of saying that these words are in
 
 - _italics_
@@ -74,21 +72,19 @@ Have you noticed the funny highlighting that appears in this document? R Markdow
 `*`, `**`, and \` are signals used by a text editing format known as `markdown`. R Markdown uses `markdown` to turn your plain looking .Rmd documents into polished reports. Let's give that a try.
 
 # Reports
-
 When you click the `knit` button at the top of an R Markdown file (like this one), R Markdown generates a polished copy of your report. R Markdown:
 
 1. Transforms all of your markdown cues into actual formatted text (e.g. bold text, italic text, etc.)
 2. Reruns all of your code chunks in a clean R session and appends the results to the finished report.
 3. Saves the finished report alongside your .Rmd file
 
-Click the *knit* button at the top of this document or press *Cmd+Shift+K* (*Ctrl+Shift+K* on Windows) to render the finished report. The RStudio IDE will open the report so you can see its contents. For now, our reports will be HTML files. Try clicking *Knit* now.
+Click the *knit* button at the top of this document or press *Cmd+Shift+K* (*Ctrl+Shift+K* on Windows) to render the finished report. The RStudio IDE will open the report so you can see its contents. Make sure your internet browser pop-up blocker is disabled. For now, our reports will be HTML files. Try clicking *Knit* now.
 
 Take a moment to compare the knitted document to the raw code. What is similar? What is different? Do you see places where `markdown` rendered the code into formatting?
 
-You'll learn more about R Markdown throughout our time together, and all of your coding and asssignments will take place in R markdown documents.
+You'll learn more about R Markdown in later classes, and all of your coding and asssignments will take place in R markdown documents.
 
-# R Packages
-
+# R Packages  
 Here is one last code chunk that we will use in the next exercise. If you uncomment the code and try to run it, it won't work. If you don't believe me try! Let's figure out why after uncommenting the code it doesn't run
 
 ```{r}
