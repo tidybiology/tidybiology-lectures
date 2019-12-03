@@ -9,19 +9,18 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(stringr)
 library(tidybiology)
+library(mitocarta)
+library(proteins)
+
+
 ```
 
-load the proteins dataset
+load the proteins and mitocarta set. Join them like we did in class
 ```{r}
 
 ```
 
-
-Navigate to the following site: https://www.phosphosite.org/
-
-On this site you will see a search bar in the middle of the page with a drop down menu to the immediate left. In the drop down select 'substrates of' and then type the ID of any protein kinase in the box. (need help with a protein? Try mTOR, AKT, or MAPK and pick a protein from the list)
-
-After you search for it, at the top of the output table you'll see text that says 'Show Sequence Logo'. Using this information, search the proteins data set for the motif (or a version of the motif) that your kinase of choice recognizes.
+Now you are going to search for a new motif within the dataset. In this case, try searching for either the AcylPhosphatase 1 signature ([LIV]-x-G-x-V-Q-[GH]-V-x-[FM]-R) or the Tyrosine kinase phosphorylation site 1 motif ([RK]-x(2)-[DE]-x(3)-Y)
 
 ```{r}
 
@@ -35,4 +34,11 @@ Now add a column to the proteins dataframe using your code. Decide whether you w
 ```
 
 
+If you have a mitochondrial (or other) protein motif of interest, feel free to explore!
+
+A list of protein domains and motifs, along with their signatures can be found here: 
+https://prosite.expasy.org/cgi-bin/prosite/prosite-list.pl 
+```{r}
+
+```
 

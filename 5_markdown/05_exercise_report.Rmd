@@ -75,7 +75,7 @@ fav <- mitocarta_class5 %>%
 ```
 
   
-The **compartment** has the highest number of unique mitochondrial proteins, with **number** annotated in this tissue. My favorite gene is **favorite gene**, which encodes a mitochondrial protein that is most abundant in the **compartment** and is **length** amino acids long.
+The **compartment** has the highest number of unique mitochondrial proteins, with **number** annotated in this tissue. My favorite gene is **favorite gene**, which encodes a mitochondrial protein that is most abundant in the **compartment** and is **length** amino acids long.  
 
 ```{r graph, warning=FALSE}
 mitocarta_class5 %>% 
@@ -88,9 +88,10 @@ mitocarta_class5 %>%
   scale_fill_viridis(discrete = TRUE, direction = -1) +
   theme_minimal() +
   NULL
-```
 
 #change code chunks so only the report output and plot are shown on the knitted report
+
+```
 
 ```{r provenance, include=FALSE}
 #Session information for provenance and reproducibility
