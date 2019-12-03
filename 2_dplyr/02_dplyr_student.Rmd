@@ -1,0 +1,354 @@
+---
+title: "Introduction to dplyr"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+```
+
+## Loading the `proteins` and `mitocarta` datasets into RStudio 
+
+The datasets can be found in the `proteins` and `mitocarta` packages on the Hirsheylab Github page
+
+To install and load the packages, run the following
+
+```{r install tidybiology, echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE}
+devtools::install_github("hirscheylab/proteins")
+devtools::install_github("hirscheylab/mitocarta")
+library(proteins)
+library(mitocarta)
+```
+
+## Inspecting the `proteins` dataset 
+
+Use the `dim()` function to see how many rows (observations) and columns (variables) there are
+
+```{r dim, echo = TRUE, warning = FALSE}
+dim(proteins)
+```
+
+## Inspecting the `proteins` dataset 
+
+Use the `glimpse()` function to see what kinds of variables the dataset contains
+```{r glimpse, echo = TRUE, warning = FALSE}
+glimpse(proteins)
+```
+
+## Basic Data Types in R 
+
+R has 6 basic data ypes -
+
+**character** - `"a"`, `"tidyverse"`  
+
+**numeric** - `2`, `11.5`  
+
+**integer** - `2L` (the `L` tells R to store this as an integer)  
+
+**logical** - `TRUE`, `FALSE`  
+
+**complex** - `1+4i`  
+
+(**raw**)
+
+You will also come across the **double** datatype. It is the same as **numeric**
+
+**factor**. A **factor** is a collection of *ordered* character variables
+
+## Basic Data Types in R 
+
+In addition to the `glimpse()` function, you can use the `class()` function to determine the data type of a specific column
+
+```{r class, echo = TRUE, warning = FALSE}
+class(proteins$length)
+```
+
+## (Re)Introducing `%>%` 
+
+The `%>%` operator is a way of "chaining" together strings of commands that make reading your code easy. The following code chunk illustrates how `%>%` works
+
+```{r %>%, eval = TRUE, echo = TRUE}
+proteins %>% 
+  select(uniprot_id, length) %>% 
+  filter(length > 500) 
+```
+
+The above code chunk does the following - it takes you dataset, `proteins`, and "pipes" it into `select()`
+
+## (Re)Introducing `%>%` 
+
+The second line selects just the columns named `uniprot_id` and `length` and "pipes" that into `filter()`. The final line selects proteins that are longer than 500 amino acids
+
+When you see `%>%`, think "and then"
+
+The alternative to using `%>%` is running the following code 
+
+```{r alternative, eval = FALSE, echo = TRUE}
+filter(select(proteins, uniprot_id, length), length > 500)
+```
+
+Although this is only one line as opposed to three, it's both more difficult to write and more difficult to read
+
+## Introducing the main dplyr verbs {.build}
+
+dplyr is a package that contains a suite of functions that allow you to easily manipulate a dataset      
+
+Some of the things you can do are -
+
+- select rows and columns that match specific criteria
+
+- create new variables (columns)
+
+- obtain summary statistics on individual groups within your datsets 
+
+The main verbs we will cover are `select()`, `filter()`, `arrange()`, `mutate()`, and `summarise()`. These all combine naturally with `group_by()` which allows you to perform any operation "by group"
+
+## `select()` 
+
+The `select()` verb allows you to extract specific columns from your dataset  
+
+The most basic `select()` is one where you comma separate a list of columns you want included
+
+For example, if you only want to select the `uniprot_id` and `length` columns, run the following code chunk 
+
+```{r select simple, eval = TRUE, echo = TRUE}
+proteins %>% 
+  select(uniprot_id, length) 
+```
+
+## `select()` 
+
+If you want to select all columns *except* `uniprot_id`, run the following 
+
+```{r select exclude, eval = TRUE, echo = TRUE}
+proteins %>% 
+  select(-uniprot_id) 
+```
+
+## `select()` 
+
+Finally, you can provide a range of columns to return two columns and everything in between. For example 
+
+```{r select range, eval = TRUE, echo = TRUE}
+proteins %>% 
+  select(uniprot_id:protein_name) 
+```
+
+This code selects the following columns - `uniprot_id`, `gene_name`, `gene_name_alt`, and `protein_name`
+
+## `select()` exercise 
+
+Select the following columns - `uniprot_id`, `sequence`, `length`, and `mass`
+
+```{r select solution, eval = TRUE, echo = TRUE}
+
+```
+
+## `filter()` 
+
+The `filter()` verb allows you to choose rows based on certain condition(s) and discard everything else
+
+All filters are performed on some logical statement
+
+If a row meets the condition of this statement (i.e. is true) then it gets chosen (or "filtered"). All other rows are discarded
+
+## `filter()` 
+
+Filtering can be performed on categorical data
+
+```{r filter categorical, eval = TRUE, echo = TRUE}
+mitocarta %>% 
+  filter(mito_domain_score == "MitoDomain") 
+```
+
+The code chunk above only shows you proteins with a mito domain score that is equal to MitoDomain
+
+Note that `filter()` only applies to rows, and has no effect on columns
+
+## `filter()` 
+
+Filtering can also be performed on numerical data
+
+For example, to select proteins with a `mcarta2_fdr` value that is less than 0.05, run the following code
+
+```{r filter numerical, eval = TRUE, echo = TRUE}
+mitocarta %>% 
+  filter(mcarta2_fdr < 0.05) 
+```
+
+## `filter()` 
+
+To filter on multiple conditions, you can write a sequence of `filter()` commands
+
+For example, to choose proteins with a mito domain score that is equal to MitoDomain **and** a `mcarta2_fdr` value that is less than 0.05
+
+```{r filter both, eval = TRUE, echo = TRUE}
+mitocarta %>% 
+  filter(mito_domain_score == "MitoDomain") %>% 
+  filter(mcarta2_fdr < 0.05) 
+```
+
+## `filter()` 
+
+To avoid writing multiple `filter()` commands, multiple logical statements can be put inside a single `filter()` command, separated by commas
+
+```{r filter both efficient, eval = TRUE, echo = TRUE}
+mitocarta %>% 
+  filter(mito_domain_score == "MitoDomain",
+         mcarta2_fdr < 0.05) 
+```
+
+## `filter()` exercise 
+
+Filter all proteins with a mito domain score that is **not** equal to MitoDomain **and** a `mcarta2_fdr` value that is **greater** than 0.05
+
+`!=` = "not equal to"
+
+`<=` = "less than or equal to"
+
+```{r filter exercise, eval = TRUE, echo = TRUE}
+
+```
+
+## `arrange()` 
+
+You can use the `arrange()` verb to sort rows
+
+The input for arrange is one or many columns, and `arrange()` sorts the rows in ascending order i.e. from smallest to largest
+
+For example, to sort rows from smallest to largest protein, run the following 
+
+```{r arrange, eval = TRUE, echo = TRUE}
+proteins %>% 
+  arrange(length) 
+```
+
+## `arrange()` 
+
+To reverse this order, use the `desc()` function within `arrange()`
+
+```{r arrange desc, eval = TRUE, echo = TRUE}
+proteins %>% 
+  arrange(desc(length)) 
+```
+
+## `arrange()` exercise 
+
+What happens when you apply `arrange()` to a categorical variable?
+
+```{r arrange exercise, eval = TRUE, echo = TRUE}
+proteins %>% 
+  arrange(gene_name_alt) 
+```
+
+## `mutate()` 
+
+The `mutate()` verb, unlike the ones covered so far, creates new variable(s) i.e. new column(s). For example
+
+```{r mutate simple, eval = TRUE, echo = TRUE}
+proteins %>% 
+  mutate(sqrt_length = sqrt(length)) 
+```
+
+The code chunk above takes all the elements of the column `length`, evaluates the square root of each element, and populates a new column called `sqrt_length` with these results
+
+## `mutate()` 
+
+Multiple columns can be used as inputs. For example 
+
+```{r mutate multiple, eval = TRUE, echo = TRUE}
+proteins %>% 
+  mutate(protein_length_mass = length/mass) 
+```
+
+This code takes the length of each protein and divides it by its mass
+
+The results are stored in a new column called `protein_length_mass`
+
+## `mutate()` exercise 
+
+Create a new column (give it any name you like) and fill it with protein lengths divided by 100
+
+```{r mutate exercise, eval = TRUE, echo = TRUE}
+
+```
+
+## `summarise()` 
+
+`summarise()` produces a new dataframe that aggregates that values of a column based on a certain condition.
+
+For example, to calculate the mean protein length and mass, run the following 
+
+```{r summarise, eval = TRUE, echo = TRUE}
+proteins %>% 
+  summarise(mean(length), mean(mass))
+```
+
+## `summarise()` 
+
+You can assign your own names by running the following 
+
+```{r summarise name, eval = TRUE, echo = TRUE}
+proteins %>% 
+  summarise(mean_length = mean(length), 
+            mean_mass = mean(mass))
+```
+
+## `summarise()` exercise 
+
+Make a new table that contains the mean, median and standard deviations of protein lengths
+
+Use the `median()` and `sd()` functions to calculate median and standard deviation
+
+```{r summarise exercise, eval = TRUE, echo = TRUE}
+
+```
+
+## `group_by()` 
+
+`group_by()` and `summarise()` can be used in combination to summarise by groups
+
+For example, if you'd like to know the mean length of both mitochondrial and non mitochondrial proteins, run the following 
+
+```{r group_by and summarise, eval = TRUE, echo = TRUE}
+mitocarta %>% 
+  group_by(mcarta2_list) %>% 
+  summarise(mean(protein_length)) 
+```
+
+## Saving a new dataset 
+
+If you'd like to save the output of your wrangling, you will need to use the `<-` or `->` operators
+
+```{r all together now save, eval = TRUE, echo = TRUE}
+mito_new <- mitocarta %>% 
+              group_by(mcarta2_list) %>% 
+              summarise(mean(protein_length))  
+```
+
+To save `mito_new` as a new file (e.g. csv)
+
+```{r csv save, eval = FALSE, echo = TRUE}
+write_csv(mito_new, "mito_new.csv")
+```
+
+## For more help 
+
+Run the following to access the Dplyr vignette 
+
+```{r Dplyr vignette, eval = FALSE, echo = TRUE}
+browseVignettes("dplyr")
+```
+
+
+
+
+
+
+
+
+
+
+
+

@@ -7,40 +7,84 @@ output: html_document
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(tidybiology)
+library(mitocarta)
 library(viridis)
 
 #clear environment
 #rm(list=ls()) 
+
+mitocarta_class5 <- mitocarta %>% 
+  filter(mcarta2_list == 1) %>% 
+  mutate(cerebrum = if_else(str_detect(tissues, "cerebrum|all"), TRUE, FALSE)) %>% 
+  mutate(cerebellum = if_else(str_detect(tissues, "cerebellum|all"), TRUE, FALSE))  %>% 
+  mutate(brainstem = if_else(str_detect(tissues, "brainstem|all"), TRUE, FALSE)) %>% 
+  mutate(spinalcord = if_else(str_detect(tissues, "spinalcord|all"), TRUE, FALSE)) %>% 
+  mutate(kidney = if_else(str_detect(tissues, "kidney|all"), TRUE, FALSE)) %>% 
+  mutate(liver = if_else(str_detect(tissues, "liver|all"), TRUE, FALSE)) %>% 
+  mutate(heart = if_else(str_detect(tissues, "heart|all"), TRUE, FALSE)) %>% 
+  mutate(skeletalmuscle = if_else(str_detect(tissues, "skeletalmuscle|all"), TRUE, FALSE)) %>% 
+  mutate(adipose = if_else(str_detect(tissues, "adipose|all"), TRUE, FALSE)) %>% 
+  mutate(smallintestine = if_else(str_detect(tissues, "smallintestine|all"), TRUE, FALSE)) %>% 
+  mutate(largeintestine = if_else(str_detect(tissues, "largeintestine|all"), TRUE, FALSE)) %>% 
+  mutate(stomach = if_else(str_detect(tissues, "stomach|all"), TRUE, FALSE)) %>% 
+  mutate(placenta = if_else(str_detect(tissues, "placenta|all"), TRUE, FALSE)) %>% 
+  mutate(testis = if_else(str_detect(tissues, "testis|all"), TRUE, FALSE)) %>% 
+  select(symbol, tissues, cerebrum:testis) 
+
+mitocarta_class5 %>% summarize_if(is.logical, sum, na.rm = TRUE)
+  
+mitocarta_class5_long <- mitocarta_class5 %>% 
+  pivot_longer(cerebrum:testis, names_to = "location", values_to = "true_false")
+
+mitocarta_class5_long %>% group_by(location) %>% count(true_false, sort = TRUE)
+
+mitocarta_class5_intensity <- mitocarta %>% 
+  filter(mcarta2_list == 1) %>% 
+  pivot_longer(cerebrum_total_peak_intensity_log10:testis_total_peak_intensity_log10, names_to = "location_intensity", values_to = "intensity") %>% 
+  select(symbol, location_intensity, intensity, protein_length)
+
+mitocarta_class5_intensity$location_intensity <- str_replace(mitocarta_class5_intensity$location_intensity, "_total_peak_intensity_log10", "")
+
+mitocarta_class5 <- mitocarta_class5_long %>% 
+  left_join(mitocarta_class5_intensity, by = c("symbol" = "symbol", "location" = "location_intensity")) %>% 
+  select(-tissues)
+
+rm(list = c("mitocarta_class5_intensity", "mitocarta_class5_long"))
 ```
 
 ```{r students}
 ##### STUDENTS START HERE #####
 
-#Which subcellular locations have most annotated proteins?
-subcell %>% 
-  count(location, sort = TRUE)
+#Which tissue has the most unique mitochondrial proteins?
+mitocarta_class5 %>% 
+  group_by(location) %>% 
+  count(true_false, sort = TRUE)
 
 #Store an object to call below
-top <- subcell %>% 
-  count(location, sort = TRUE) %>% 
-  top_n(1)
+top <- mitocarta_class5 %>% 
+  group_by(location) %>% 
+  count(true_false, sort = TRUE) %>% 
+  ungroup() %>% 
+  slice(1)
 
 #Store favorite gene
-fav <- subcell %>% 
-  filter(gene_name == "MDH1")  #students: <-- put your favorite gene here
+fav <- mitocarta_class5 %>% 
+  filter(symbol == "MDH2") %>%  #students: <-- put your favorite mitochondrial gene here
+  arrange(desc(intensity)) %>% 
+  slice(1)
 ```
+
   
-  
-The **compartment** has the highest number of protein coding genes, with **number** annotated in this compartment. My favorite gene is **favorite gene**, which encodes a protein that is primarily located in the **compartment** is **length** amino acids long.
-  
-  
+The **compartment** has the highest number of unique mitochondrial proteins, with **number** annotated in this tissue. My favorite gene is **favorite gene**, which encodes a mitochondrial protein that is most abundant in the **compartment** and is **length** amino acids long.
+
 ```{r graph, warning=FALSE}
-subcell %>% 
+mitocarta_class5 %>% 
+  filter(true_false == TRUE) %>% 
   group_by(location) %>% 
-  ggplot(aes(x = fct_rev(fct_infreq(fct_lump(location, 10))))) +
-  geom_histogram(aes(fill = fct_rev(fct_infreq(fct_lump(location, 10)))), stat = "count", show.legend = FALSE) +
+  ggplot(aes(x = fct_rev(fct_infreq(location)))) +
+  geom_histogram(aes(fill = fct_rev(fct_infreq(location))), stat = "count", show.legend = FALSE) +
   coord_flip() +
-  labs(x = "", y = "Count", title = "Number of proteins in each cellular compartment") +
+  labs(x = "", y = "Count", title = "Number of mitochondrial proteins detected in each tissue") +
   scale_fill_viridis(discrete = TRUE, direction = -1) +
   theme_minimal() +
   NULL
@@ -50,6 +94,5 @@ subcell %>%
 
 ```{r provenance, include=FALSE}
 #Session information for provenance and reproducibility
-utils:::print.sessionInfo(sessionInfo()[-8]) 
-#You can remove an item from sessionInfo(), which is a list with a class attribute, by printing the resulting object omitting one of the list items (omitted list of packages installed, but not loaded)
+session_provenance()
 ```

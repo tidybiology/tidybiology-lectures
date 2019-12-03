@@ -1,0 +1,131 @@
+---
+title: "04_student"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Importing data into R 
+
+The `readr` package (found in the `tidyverse` collection) contains a number of useful functions of the form  
+`read_*` to import data. For example, if you have a `.csv` file, you would use the `read_csv` function
+
+Download a file from uniprot.org
+
+After selecting some columns of interest, click the Download button and download as a compressed Text file
+
+Rename the file to something simple (yet informative!), like `uniprot` and make sure the extension is `.tsv`
+
+## Importing data into R 
+
+To import into RStudio, run the following
+
+```{r import tsv, warning = FALSE}
+uniprot <- read_tsv("uniprot.tsv")
+```
+
+## Importing data into R 
+
+You can also use the `readr` package to import data from a URL
+
+For example, to load a dataset from the (very useful) Tidy Tuesday series, run the following
+
+```{r import pizza, echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE}
+pizza <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-10-01/pizza_jared.csv")
+```
+
+This data set contains ratings of various pizzerias in Manhattan
+
+## Combining datasets 
+
+There are many times when you have two or more overlapping datasets that you would like to combine
+
+The `dplyr` package has a number of `*_join` functions for this purpose
+
+## `left_join` 
+
+Returns all rows from a, and all columns from a and b
+
+Rows in a with no match in b will have NA values in the new columns
+
+If there are multiple matches between a and b, all combinations of the matches are returned
+
+## `left_join` example 
+
+First, load the two datasets needed for this example - `proteins` and `mitocarta`
+
+```{r load datasets, echo = TRUE, warning = FALSE}
+library(proteins)
+library(mitocarta)
+```
+
+Take a look at the variables in each dataset
+
+`gene_name` in `proteins` and `symbol` in `mitocarta` contain the gene IDs for each gene. They can therefore serve as a common variable
+
+Let's join on this
+
+## `left_join` example 
+
+`left_join` `proteins` with `mitocarta` and assign the output to a new object called `pm_left`
+
+```{r left_join example, echo = TRUE, warning = FALSE}
+pm_left <- left_join(proteins, mitocarta, by = c("gene_name" = "symbol"))
+pm_left 
+```
+
+Now you have one dataset with additional useful information
+
+## `right_join` 
+
+Returns all rows from b, and all columns from a and b
+
+Rows in b with no match in a will have NA values in the new columns
+
+If there are multiple matches between a and b, all combinations of the matches are returned
+
+## `right_join` example 
+
+`right_join` `proteins` with `mitocarta` and assign the output to a new object called `pm_right`
+
+```{r right_join example, echo = TRUE, warning = FALSE}
+pm_right <- right_join(proteins, mitocarta, by = c("gene_name" = "symbol"))
+pm_right 
+```
+
+## `inner_join` 
+
+Returns all rows from a where there are matching values in b, and all columns from a and b
+
+If there are multiple matches between a and b, all combination of the matches are returned
+
+## `inner_join` example 
+
+`inner_join` `proteins` with `mitocarta` and assign the output to a new object called `pm_inner`
+
+```{r inner_join example, echo = TRUE, warning = FALSE}
+pm_inner <- inner_join(proteins, mitocarta, by = c("gene_name" = "symbol"))
+pm_inner 
+```
+
+Why might this type of join be useful?
+
+## `full_join` 
+
+Returns all rows and all columns from both a and b
+
+Where there are no matching values, returns NA for the one missing
+
+## `full_join` example 
+
+`full_join` `proteins` with `mitocarta` and assign the output to a new object called `pm_full`
+
+```{r full_join example, echo = TRUE, warning = FALSE}
+pm_full <- full_join(proteins, mitocarta, by = c("gene_name" = "symbol"))
+pm_full 
+```
+
+
+

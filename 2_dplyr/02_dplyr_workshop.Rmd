@@ -1,0 +1,80 @@
+---
+title: "02_workshop"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Workshop
+
+You will be using the `chromosome` dataset to answer all the following questions
+
+Add your answers (text and/or code chunks as required) in the space after each question
+
+The `chromosome` dataset can be found in the tidybiology package. To load it, run the following
+
+```{r}
+devtools::install_github("hirscheylab/tidybiology")
+data(chromosome)
+```
+
+## Please answer the following questions
+
+What type of object is `chromosome`?
+
+```{r}
+
+```
+
+How many observations and variables does `chromosome` contain?
+
+```{r}
+
+```
+
+What are the top five chromosomes in terms of the number of protein coding genes (look at the `protein_codinggenes` variable)? Based on your output, would you say that chromosome length is proportional to the number of protein coding genes?
+
+```{r}
+
+```
+
+Using the `protein_codinggenes` and `pseudo_genes` variables, create a new variable called `total_genes` that contains the sum of protein coding genes and pseudogenes
+
+```{r}
+
+```
+
+Similarly, create a new variable called `total_rna` that contains the sum of all the different rna types i.e. the sum of all variables whose name ends in `_rna`
+
+```{r}
+
+```
+
+Make a table that contains the mean of `total_genes` and `total_rna`
+
+```{r}
+
+```
+
+How many chromosomes have a higher than average total number of genes? Type out (or copy/paste) the names of these chromosomes
+
+```{r}
+
+```
+
+Create a new column that contains chromosome length in centimetres
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+

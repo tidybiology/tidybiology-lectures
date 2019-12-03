@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 Thank you for enrolling in TidyBiology: An Introduction to Biological Data Science in R. To prepare for the class, please complete the following instructions:
 
 1. Please sign up for a free RStudio Cloud account at [https://rstudio.cloud/](https://rstudio.cloud/). On the day of the class, I'll provide you with an RStudio Cloud project that contains all of the course materials. 
@@ -10,12 +15,13 @@ Thank you for enrolling in TidyBiology: An Introduction to Biological Data Scien
 * A recent version of RStudio Desktop (>=1.1.456), available for free at [www.rstudio.com/download](www.rstudio.com/download) (use the RStudio Desktop Open Source License version)
 * The R packages we will use, which you can install by connecting to the internet, opening RStudio, and running two sequential commands at the command line:
 
-`install.packages(c("tidyverse", "rmarkdown", "devtools"))`  
-`devtools::install_github("hirscheylab/tidybiology")`
+`install.packages(c("tidyverse", "rmarkdown", "devtools", "gridExtra"))`  
+`devtools::install_github("hirscheylab/tidybiology")`  
+`devtools::install_github("hirscheylab/mitocarta")` #this is a new line of code just for this workshop! Make sure to get this one too :]  
 
-If these instructions are scary or confusing, please reach out on the Slack channel and we can help you. 
+If these instructions are scary or confusing, [please check out the installation video here](https://www.youtube.com/watch?v=nyP32Gvkgsg) that I made to walk you through these steps. Alternatively, reach out on the Slack channel and we can help you.
 
-As soon as you have completed these steps, **please introduce yourself on the #0_intros slack channel, by giving your name, lab you're currently in (joined or rotation), and experience with R**.
+As soon as you have completed these steps, **please introduce yourself on the #0_intros slack channel, by giving your name, lab you're currently in, and experience with R**.
  
 Lastly, don't forget your power cord!
 

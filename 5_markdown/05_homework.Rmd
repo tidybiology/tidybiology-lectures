@@ -7,6 +7,8 @@ subtitle: "Class 5 homework"
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 library(tidyverse)
 library(tidybiology)
+library(mitocarta)
+library(proteins)
 ```
 
 ## Explore
@@ -30,3 +32,7 @@ glimpse(chromosome)
 ### Next dataframe
 Summary sentence of the dataframe
 Insert code chunk that loads the data and takes a glimpse
+
+### Repeat for mitocarta and proteins
+
+### If you'd like, you can look at github.com/hirscheylab for more packages!

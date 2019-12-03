@@ -1,1 +1,1 @@
-The `r top$location` has the highest number of protein coding genes, with `r top$n` annotated in this compartment. My favorite gene is `r fav$gene_name`, which encodes a protein that is primarily located in the `r fav$location` is `r fav$length` amino acids long.
+The `r top$location` has the highest number of unique mitochondrial proteins, with `r top$n` annotated in this tissue. My favorite gene is `r fav$symbol`, which encodes a mitochondrial protein that is most abundant in the `r fav$location` and is `r fav$protein_length` amino acids long.
