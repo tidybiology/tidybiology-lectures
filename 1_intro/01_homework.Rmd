@@ -14,7 +14,7 @@ data("chromosome")
 ```
 
 ## Take a `glimpse` into the kinds of data in the dataframe
-The `genome` object is a table (also called a dataframe), that has a series of columns and rows. The function `glimpse()` perfroms a quick peek at the data. We can see that this table has 14 columns (called 'Variables'), and 24 rows (called 'Observations'). The name of each Variable is listed below (e.g. 'id', 'length_mm', etc.). Importantly, R cares about capitalization, so `id` is NOT the same as `ID`. The type of variable is listed next (e.g. <fct>, <dbl>, etc.), but you don't need to worry about these yet. Lastly, the first few observations are listed.  
+The `chromosome` object is a table (also called a dataframe), that has a series of columns and rows. The function `glimpse()` perfroms a quick peek at the data. We can see that this table has 14 columns (called 'Variables'), and 24 rows (called 'Observations'). The name of each Variable is listed below (e.g. 'id', 'length_mm', etc.). Importantly, R cares about capitalization, so `id` is NOT the same as `ID`. The type of variable is listed next (e.g. <fct>, <dbl>, etc.), but you don't need to worry about these yet. Lastly, the first few observations are listed.  
   
 ```{r glimpse}
 glimpse(chromosome)
