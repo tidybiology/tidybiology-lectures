@@ -2,9 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
+.Renviron
 /.DS_Store
 *.DS_Store
 *.nb.html
 *.Rproj
 tmp/
-00*
+admin*
